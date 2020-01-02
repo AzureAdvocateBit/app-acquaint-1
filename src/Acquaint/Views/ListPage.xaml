@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="Acquaint.Views.ListPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:Acquaint.Converters"
+    xmlns:viewmodels="clr-namespace:Acquaint.ViewModels"
+    NavigationPage.BackButtonTitle="List">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:BooleanInverter x:Key="BooleanInverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <!--  The Refresh ToolBarItem is only for UWP. See code-behind.  -->
+        <ToolbarItem
+            x:Name="refreshToolbarItem"
+            Command="{Binding RefreshAcquaintancesCommand}"
+            Icon="refresh.png"
+            Text="Refresh" />
+        <!--  The Settings ToolBarItem is present on all platforms.  -->
+        <ToolbarItem
+            x:Name="settingsToolbarItem"
+            Command="{Binding ShowSettingsCommand}"
+            Icon="settings.png"
+            Text="Settings" />
+        <!--  The Add Acquaintance ToolBarItem is removed for Android. See code-behind.  -->
+        <ToolbarItem
+            x:Name="addAcquaintanceToolbarItem"
+            Command="{Binding NewAcquaintanceCommand}"
+            Icon="add.png"
+            Text="New" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <AbsoluteLayout>
+            <AbsoluteLayout.Children>
+                <ListView
+                    AbsoluteLayout.LayoutBounds="0,0,1,1"
+                    AbsoluteLayout.LayoutFlags="All"
+                    CachingStrategy="RecycleElement"
+                    HasUnevenRows="false"
+                    IsPullToRefreshEnabled="true"
+                    IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                    ItemTapped="ItemTapped"
+                    ItemsSource="{Binding Acquaintances}"
+                    RefreshCommand="{Binding RefreshAcquaintancesCommand}"
+                    RowHeight="60">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell Height="60" StyleId="disclosure">
+                                <ViewCell.ContextActions>
+                                    <MenuItem
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ListViewModel}}, Path=EmailCommand}"
+                                        CommandParameter="{Binding Id}"
+                                        Text="Email" />
+                                    <MenuItem
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ListViewModel}}, Path=MessageNumberCommand}"
+                                        CommandParameter="{Binding Id}"
+                                        Text="Text" />
+                                    <MenuItem
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ListViewModel}}, Path=DialNumberCommand}"
+                                        CommandParameter="{Binding Id}"
+                                        Text="Call" />
+                                </ViewCell.ContextActions>
+                                <ContentView Padding="10,0">
+                                    <StackLayout Orientation="Horizontal" Spacing="0">
+                                        <ContentView Margin="3" WidthRequest="54">
+                                            <Image
+                                                HeightRequest="50"
+                                                HorizontalOptions="Center"
+                                                Source="{Binding SmallPhotoUrl}"
+                                                VerticalOptions="Center"
+                                                WidthRequest="50">
+                                                <!--<ffimageloading:CachedImage.Transformations>
+															<fftransformations:CircleTransformation />
+														</ffimageloading:CachedImage.Transformations>-->
+                                            </Image>
+                                        </ContentView>
+                                        <ContentView Padding="10,0,0,0">
+                                            <StackLayout Spacing="0">
+                                                <Label
+                                                    HeightRequest="20"
+                                                    LineBreakMode="TailTruncation"
+                                                    Text="{Binding DisplayLastNameFirst}"
+                                                    VerticalTextAlignment="End" />
+                                                <Label
+                                                    FontSize="Micro"
+                                                    HeightRequest="20"
+                                                    LineBreakMode="TailTruncation"
+                                                    Text="{Binding Company}"
+                                                    VerticalTextAlignment="End" />
+                                                <Label
+                                                    FontSize="Micro"
+                                                    HeightRequest="20"
+                                                    LineBreakMode="TailTruncation"
+                                                    Text="{Binding JobTitle}"
+                                                    TextColor="Silver"
+                                                    VerticalTextAlignment="Start" />
+                                            </StackLayout>
+                                        </ContentView>
+                                    </StackLayout>
+                                </ContentView>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </AbsoluteLayout.Children>
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</ContentPage>

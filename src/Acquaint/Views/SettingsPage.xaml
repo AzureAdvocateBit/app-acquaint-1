@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="Acquaint.Views.SettingsPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Settings">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem
+            Command="{Binding CancelCommand}"
+            Icon="cancel.png"
+            Text="Cancel" />
+        <ToolbarItem
+            Command="{Binding SaveCommand}"
+            Icon="save.png"
+            Text="Save" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <ContentView x:Name="TopContentView">
+            <ContentView.Content>
+                <TableView
+                    Margin="10,0"
+                    Intent="Menu"
+                    StyleId="NoSeparator">
+                    <TableView.BackgroundColor>
+                        <OnPlatform x:TypeArguments="Color" iOS="White" />
+                    </TableView.BackgroundColor>
+                    <TableView.Root>
+                        <TableRoot>
+                            <TableSection Title="Data Partition Phrase (required)">
+                                <ViewCell>
+                                    <StackLayout>
+                                        <Entry
+                                            x:Name="DataPartitionPhraseEntry"
+                                            Keyboard="Text"
+                                            Placeholder="Enter a unique phrase"
+                                            Text="{Binding DataPartitionPhrase}" />
+                                    </StackLayout>
+                                </ViewCell>
+                            </TableSection>
+                            <TableSection Title="Backend URL (required valid URL)">
+                                <ViewCell>
+                                    <StackLayout>
+                                        <Entry
+                                            x:Name="BackendServiceUrlEntry"
+                                            Keyboard="Text"
+                                            Placeholder="ex: http://yourservice.azurewebsites.net"
+                                            Text="{Binding AzureAppServiceUrl}" />
+                                    </StackLayout>
+                                </ViewCell>
+                            </TableSection>
+                            <TableSection Title="Image Cache Duration (in hours)">
+                                <ViewCell>
+                                    <StackLayout>
+                                        <Entry Keyboard="Numeric" Text="{Binding ImageCacheDurationHours}" />
+                                    </StackLayout>
+                                </ViewCell>
+                            </TableSection>
+                            <TableSection>
+                                <SwitchCell On="{Binding ClearImageCache}" Text="Clear image cache?" />
+                                <SwitchCell On="{Binding ResetToDefaults}" Text="Reset to defaults?" />
+                            </TableSection>
+                        </TableRoot>
+                    </TableView.Root>
+                </TableView>
+            </ContentView.Content>
+        </ContentView>
+    </ContentPage.Content>
+</ContentPage>

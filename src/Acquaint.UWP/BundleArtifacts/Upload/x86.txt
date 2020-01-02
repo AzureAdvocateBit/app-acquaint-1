@@ -1,0 +1,2 @@
+MainPackage=Z:\Projects\app-acquaint\Acquaint\Acquaint.UWP\bin\x86\Release\Upload\Acquaint.UWP_1.1.0.0_x86.appx
+SymbolPackage=Z:\Projects\app-acquaint\Acquaint\Acquaint.UWP\AppPackages\Acquaint.UWP_1.1.0.0\Acquaint.UWP_1.1.0.0_x86.appxsym
