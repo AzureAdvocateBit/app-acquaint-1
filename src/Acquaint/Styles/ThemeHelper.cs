@@ -2,6 +2,7 @@
 using Acquaint.Interfaces;
 using Acquaint.Models;
 using Xamarin.Forms;
+using Xamarin.Essentials;
 
 namespace Acquaint.Styles
 {
@@ -42,8 +43,9 @@ namespace Acquaint.Styles
 
             CurrentTheme = theme;
 
+            
             var background = (Color)App.Current.Resources["PrimaryDarkColor"];
-            environment?.SetStatusBarColor(background, false);
+            environment?.SetStatusBarColor(ColorConverters.FromHex(background.ToHex()), false);
         }
 
         static void ManuallyCopyThemes(ResourceDictionary fromResource, ResourceDictionary toResource)

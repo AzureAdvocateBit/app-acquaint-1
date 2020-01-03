@@ -36,9 +36,9 @@
             <Color x:Key="SystemGray5">#E5E5EA</Color>
             <Color x:Key="SystemGray6">#F2F2F7</Color>
 
-            <Color x:Key="FabBackgroundColor">#353639</Color>
-            <Color x:Key="SearchBackgroundColor">#303134</Color>
-            <Color x:Key="SearchTextColor">#9aa0a6</Color>
+            <Color x:Key="FabBackgroundColor">#ffffff</Color>
+            <Color x:Key="SearchBackgroundColor">#ffffff</Color>
+            <Color x:Key="SearchTextColor">#5f6368</Color>
 
             <Color x:Key="SeparatorColor">#757575</Color>
             <Color x:Key="OpaqueSeparatorColor">#757575</Color>
