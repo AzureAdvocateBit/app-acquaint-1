@@ -18,7 +18,7 @@ namespace Acquaint.Services
     /// </summary>
     public class FileDataSource : IDataSource<Acquaintance>
 	{
-        const string baseImagePath = "";
+        const string baseImagePath = "https://raw.githubusercontent.com/jamesmontemagno/app-acquaint/2020-updates/data";
 		bool isInitialized;
 		List<Acquaintance> acquaintances;
         readonly string fullPath;

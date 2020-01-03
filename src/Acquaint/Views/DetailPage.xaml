@@ -1,101 +1,185 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             x:Class="Acquaint.Views.DetailPage" 
-             Title="{Binding Acquaintance.DisplayName}"
-             xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
-             xmlns:converters="clr-namespace:Acquaint.Converters"
-             NavigationPage.BackButtonTitle="Details">
-	<ContentPage.Resources>
-		<ResourceDictionary>
-			<converters:BooleanInverter x:Key="BooleanInverter" />
-		</ResourceDictionary>
-	</ContentPage.Resources>
-	<ContentPage.ToolbarItems>
-		<ToolbarItem Text="Delete" Icon="delete.png" Command="{Binding DeleteAcquaintanceCommand}" />
-		<ToolbarItem Text="Edit" Icon="edit.png" Command="{Binding EditAcquaintanceCommand}" />
-	</ContentPage.ToolbarItems>
-	<ContentPage.Content>
-		<AbsoluteLayout>
-			<StackLayout Spacing="0" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
-				<ContentView Padding="10">
-					<StackLayout Orientation="Horizontal" Spacing="10">
-						<AbsoluteLayout>
-							<Image 
-                                x:Name="ProfilePhoto" 
-                                HorizontalOptions="Center" 
-                                VerticalOptions="Center" 
-                                WidthRequest="90" 
-                                HeightRequest="90" 
-                                Source="{Binding Acquaintance.PhotoUrl}" >
-								<!--<ffimageloading:CachedImage.Transformations>
-									<fftransformations:CircleTransformation />
-								</ffimageloading:CachedImage.Transformations>-->
-							</Image>
-						</AbsoluteLayout>
-						<StackLayout Spacing="10">
-							<ContentView>
-								<StackLayout Spacing="0">
-									<Label Text="{Binding Acquaintance.Company}" />
-									<Label Text="{Binding Acquaintance.JobTitle}" FontSize="Small" TextColor="Silver" />
-								</StackLayout>
-							</ContentView>
-							<ContentView IsEnabled="{Binding HasAddress}" IsVisible="{Binding HasAddress}">
-								<StackLayout Orientation="Horizontal" Spacing="10">
-									<Image Source="directions.png" Aspect="AspectFit" HeightRequest="20" WidthRequest="20">
-										<Image.GestureRecognizers>
-											<TapGestureRecognizer Command="{Binding GetDirectionsCommand}" />
-										</Image.GestureRecognizers>
-									</Image>
-									<StackLayout Spacing="0">
-										<Label Text="{Binding Acquaintance.Street}" FontSize="Micro" LineBreakMode="TailTruncation" />
-										<Label Text="{Binding Acquaintance.City}" FontSize="Micro" LineBreakMode="TailTruncation" />
-										<Label Text="{Binding Acquaintance.StatePostal}" FontSize="Micro" LineBreakMode="TailTruncation" />
-									</StackLayout>
-								</StackLayout>
-							</ContentView>
-							<ContentView IsEnabled="{Binding HasPhoneNumber}" IsVisible="{Binding HasPhoneNumber}">
-								<StackLayout Orientation="Horizontal" Spacing="10">
-									<Image Source="message.png" Aspect="AspectFit" HeightRequest="20" WidthRequest="20">
-										<Image.GestureRecognizers>
-											<TapGestureRecognizer Command="{Binding MessageNumberCommand}" NumberOfTapsRequired="1" />
-										</Image.GestureRecognizers>
-									</Image>
-									<Label Text="{Binding Acquaintance.Phone}" FontSize="Small" HeightRequest="20" VerticalTextAlignment="Center" LineBreakMode="TailTruncation" />
-									<Image Source="phone.png" Aspect="AspectFit" HeightRequest="20" WidthRequest="20">
-										<Image.GestureRecognizers>
-											<TapGestureRecognizer Command="{Binding DialNumberCommand}" NumberOfTapsRequired="1" />
-										</Image.GestureRecognizers>
-									</Image>
-								</StackLayout>
-							</ContentView>
-							<ContentView IsEnabled="{Binding HasEmailAddress}" IsVisible="{Binding HasEmailAddress}">
-								<StackLayout Orientation="Horizontal" Spacing="10">
-									<Image Source="email.png" Aspect="AspectFit" HeightRequest="20" WidthRequest="20">
-										<Image.GestureRecognizers>
-											<TapGestureRecognizer Command="{Binding EmailCommand}" NumberOfTapsRequired="1" />
-										</Image.GestureRecognizers>
-									</Image>
-									<Label Text="{Binding Acquaintance.Email}" FontSize="Micro" HeightRequest="20" LineBreakMode="TailTruncation" VerticalTextAlignment="Center" />
-								</StackLayout>
-							</ContentView>
-						</StackLayout>
-					</StackLayout>
-				</ContentView>
-				<ContentView HeightRequest="1" BackgroundColor="Silver" />
-				<AbsoluteLayout VerticalOptions="FillAndExpand">
-					<ContentView Padding="50" VerticalOptions="Center" IsVisible="{Binding HasAddress, Converter={StaticResource BooleanInverter}}" IsEnabled="{Binding HasAddress, Converter={StaticResource BooleanInverter}}" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1.0, 1.0">
-						<StackLayout Spacing="20">
-							<Label Text="No map is available because this person does not have an address." VerticalTextAlignment="Center" />
-							<Label Text="Enter an address on the edit screeen to see this person's location on a map." VerticalTextAlignment="Center" />
-						</StackLayout>
-					</ContentView>
-					<AbsoluteLayout IsEnabled="{Binding HasAddress}" IsVisible="{Binding HasAddress}" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1.0, 1.0">
-						<ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" AbsoluteLayout.LayoutFlags="PositionProportional, WidthProportional" AbsoluteLayout.LayoutBounds="0.5, 0.5, 0.2, AutoSize" />
-						<maps:Map x:Name="AcquaintanceMap" IsVisible="false" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1.0, 1.0" />
-					</AbsoluteLayout>
-				</AbsoluteLayout>
-			</StackLayout>
-		</AbsoluteLayout>
-	</ContentPage.Content>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="Acquaint.Views.DetailPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:Acquaint.Converters"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:pancakeview="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+    xmlns:viewmodels="clr-namespace:Acquaint.ViewModels"
+    Title="{Binding Acquaintance.DisplayName}"
+    BackgroundColor="{DynamicResource WindowBackgroundColor}"
+    NavigationPage.BackButtonTitle="Details"
+    mc:Ignorable="d">
+    <d:ContentPage.BindingContext>
+        <viewmodels:DetailViewModel />
+    </d:ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:BooleanInverter x:Key="BooleanInverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem
+            Command="{Binding DeleteAcquaintanceCommand}"
+            Text="Delete">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource
+                        FontFamily="{DynamicResource MaterialFontFamily}"
+                        Glyph="{StaticResource IconDelete}"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem
+            Command="{Binding EditAcquaintanceCommand}"
+            Text="Edit">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource
+                        FontFamily="{DynamicResource MaterialFontFamily}"
+                        Glyph="{StaticResource IconEdit}"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <Grid RowSpacing="12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="124" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <pancakeview:PancakeView
+            CornerRadius="40,15,15,40"
+            Margin="0,12,0,0"
+            HeightRequest="100"
+            HorizontalOptions="Center"
+            IsClippedToBounds="True"
+            Style="{DynamicResource PancakeStyle}"
+            VerticalOptions="Center"
+            WidthRequest="100">
+            <Image Aspect="AspectFill" Source="{Binding Acquaintance.PhotoUrl}" />
+        </pancakeview:PancakeView>
+
+        <StackLayout Grid.Column="1" >
+            <StackLayout
+                Padding="0,12,0,0"
+                BindingContext="{Binding Acquaintance}"
+                Spacing="0">
+                <Label Style="{DynamicResource LargeLabelStyle}" Text="{Binding Company}" />
+                <Label Style="{DynamicResource SmallLabelStyle}" Text="{Binding JobTitle}" />
+            </StackLayout>
+
+            <Label BindingContext="{Binding Acquaintance}" Style="{DynamicResource MicroLabelStyle}">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding Street}"/>
+                        <Span Text="&#x0a;"/>
+                        <Span Text="{Binding City}"/>
+                        <Span Text=", "/>
+                        <Span Text="{Binding StatePostal}"/>
+                        <Span Text="&#x0a;"/>
+                        <Span Text="{Binding Phone}"/>
+                        <Span Text="&#x0a;"/>
+                        <Span Text="{Binding Email}"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+
+
+
+        </StackLayout>
+
+        <StackLayout
+            HorizontalOptions="Center"
+            Orientation="Horizontal"
+            Spacing="24"
+            Grid.Row="1"
+            Grid.ColumnSpan="2">
+            <ImageButton
+                Command="{Binding GetDirectionsCommand}"
+                Style="{DynamicResource DetailContactImageButtonStyle}"
+                VerticalOptions="Center">
+                <ImageButton.Source>
+                    <FontImageSource
+                        FontFamily="{DynamicResource MaterialFontFamily}"
+                        Glyph="{StaticResource IconDirections}"
+                        Color="{DynamicResource PrimaryColor}" />
+                </ImageButton.Source>
+            </ImageButton>
+            <ImageButton
+                Padding="8"
+                Command="{Binding MessageNumberCommand}"
+                Style="{DynamicResource DetailContactImageButtonStyle}"
+                VerticalOptions="Center">
+                <ImageButton.Source>
+                    <FontImageSource
+                        FontFamily="{DynamicResource MaterialFontFamily}"
+                        Glyph="{StaticResource IconSms}"
+                        Color="{DynamicResource PrimaryColor}" />
+                </ImageButton.Source>
+            </ImageButton>
+            <ImageButton
+                Padding="6"
+                Command="{Binding DialNumberCommand}"
+                Style="{DynamicResource DetailContactImageButtonStyle}">
+                <ImageButton.Source>
+                    <FontImageSource
+                        FontFamily="{DynamicResource MaterialFontFamily}"
+                        Glyph="{StaticResource IconPhone}"
+                        Color="{DynamicResource PrimaryColor}" />
+                </ImageButton.Source>
+            </ImageButton>
+            <ImageButton
+                Padding="6"
+                Command="{Binding EmailCommand}"
+                Style="{DynamicResource DetailContactImageButtonStyle}">
+                <ImageButton.Source>
+                    <FontImageSource
+                        FontFamily="{DynamicResource MaterialFontFamily}"
+                        Glyph="{StaticResource IconEmail}"
+                        Color="{DynamicResource PrimaryColor}" />
+                </ImageButton.Source>
+            </ImageButton>
+        </StackLayout>
+
+        <Grid Grid.Row="2" Grid.ColumnSpan="2">
+
+            <Frame
+                Margin="16"
+                Style="{DynamicResource FrameStyle}"
+                VerticalOptions="Center">
+                <StackLayout Spacing="20">
+                    <Label
+                        Style="{DynamicResource SmallLabelStyle}"
+                        Text="No map is available because this person does not have an address."
+                        VerticalTextAlignment="Center" />
+                    <Label
+                        Style="{DynamicResource SmallLabelStyle}"
+                        Text="Enter an address on the edit screen to see this person's location on a map."
+                        VerticalTextAlignment="Center" />
+                </StackLayout>
+            </Frame>
+            <AbsoluteLayout
+                AbsoluteLayout.LayoutBounds="0, 0, 1.0, 1.0"
+                AbsoluteLayout.LayoutFlags="All"
+                IsEnabled="{Binding HasAddress}"
+                IsVisible="{Binding HasAddress}">
+                <ActivityIndicator
+                    AbsoluteLayout.LayoutBounds="0.5, 0.5, 0.2, AutoSize"
+                    AbsoluteLayout.LayoutFlags="PositionProportional, WidthProportional"
+                    IsRunning="{Binding IsBusy}"
+                    IsVisible="{Binding IsBusy}" />
+                <maps:Map
+                    x:Name="AcquaintanceMap"
+                    AbsoluteLayout.LayoutBounds="0, 0, 1.0, 1.0"
+                    AbsoluteLayout.LayoutFlags="All"
+                    IsVisible="false" />
+            </AbsoluteLayout>
+        </Grid>
+    </Grid>
 </ContentPage>

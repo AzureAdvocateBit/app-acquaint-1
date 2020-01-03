@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Acquaint.Constants;
@@ -6,13 +7,20 @@ using Acquaint.Extensions;
 using Acquaint.Models;
 using Acquaint.Services;
 using Acquaint.Views;
+using MvvmHelpers.Commands;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
+using Command = Xamarin.Forms.Command;
 
 namespace Acquaint.ViewModels
 {
     public class DetailViewModel : ViewModelBase
     {
+        public DetailViewModel()
+        {
+
+        }
 		public DetailViewModel(Acquaintance acquaintance)
 		{
 			Acquaintance = acquaintance;
@@ -29,25 +37,16 @@ namespace Acquaint.ViewModels
 		public bool HasAddress => !string.IsNullOrWhiteSpace(Acquaintance?.AddressString);
 
 
-        Command _EditAcquaintanceCommand;
+        AsyncCommand editAcquaintanceCommand;
 
-        public Command EditAcquaintanceCommand
-        {
-            get
-            {
-                return _EditAcquaintanceCommand ??
-                    (_EditAcquaintanceCommand = new Command(async () => await ExecuteEditAcquaintanceCommand()));
-            }
-        }
+        public AsyncCommand EditAcquaintanceCommand => 
+            editAcquaintanceCommand ??= new AsyncCommand(ExecuteEditAcquaintanceCommand);
 
-        async Task ExecuteEditAcquaintanceCommand()
-        {
-			await PushAsync(new EditPage() { BindingContext = new EditViewModel(Acquaintance) });
-        }
+        Task ExecuteEditAcquaintanceCommand() => PushAsync(new EditPage(Acquaintance));
 
-		Command _DeleteAcquaintanceCommand;
+        Command deleteAcquaintanceCommand;
 
-		public Command DeleteAcquaintanceCommand => _DeleteAcquaintanceCommand ?? (_DeleteAcquaintanceCommand = new Command(ExecuteDeleteAcquaintanceCommand));
+		public Command DeleteAcquaintanceCommand => deleteAcquaintanceCommand ?? (deleteAcquaintanceCommand = new Command(ExecuteDeleteAcquaintanceCommand));
 
 		void ExecuteDeleteAcquaintanceCommand()
 		{
@@ -68,107 +67,113 @@ namespace Acquaint.ViewModels
 			});
 		}
 
-        Command _DialNumberCommand;
+        Command dialNumberCommand;
 
-        public Command DialNumberCommand => _DialNumberCommand ??
-                                            (_DialNumberCommand = new Command(ExecuteDialNumberCommand));
+        public Command DialNumberCommand => dialNumberCommand ??= 
+            new Command(ExecuteDialNumberCommand);
 
         void ExecuteDialNumberCommand()
         {
-            if (string.IsNullOrWhiteSpace(Acquaintance.Phone))
+            if (!HasPhoneNumber)
                 return;
 
-            //if (CapabilityService.CanMakeCalls)
-            //{
-            //    var phoneCallTask = MessagingPlugin.PhoneDialer;
-            //    if (phoneCallTask.CanMakePhoneCall)
-            //        phoneCallTask.MakePhoneCall(Acquaintance.Phone.SanitizePhoneNumber());
-            //}
-            //else
-            //{
-            //    MessagingService.Current.SendMessage<MessagingServiceAlert>(MessageKeys.DisplayAlert, new MessagingServiceAlert()
-            //        {
-            //            Title = "Simulator Not Supported", 
-            //            Message = "Phone calls are not supported in the iOS simulator.",
-            //            Cancel = "OK"
-            //        });
-            //}
+            try
+            {
+                PhoneDialer.Open(Acquaintance.Phone.SanitizePhoneNumber());
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                MessagingService.Current.SendMessage<MessagingServiceAlert>(MessageKeys.DisplayAlert, new MessagingServiceAlert()
+                {
+                    Title = "Not Supported",
+                    Message = "Phone calls are not supported on this device.",
+                    Cancel = "OK"
+                });
+            }
+
         }
 
-        Command _MessageNumberCommand;
+        AsyncCommand messageNumberCommand;
 
-        public Command MessageNumberCommand => _MessageNumberCommand ??
-                                               (_MessageNumberCommand = new Command(ExecuteMessageNumberCommand));
+        public AsyncCommand MessageNumberCommand => messageNumberCommand ??=
+            new AsyncCommand(ExecuteMessageNumberCommand);
 
-        void ExecuteMessageNumberCommand()
+        async Task ExecuteMessageNumberCommand()
         {
-            if (string.IsNullOrWhiteSpace(Acquaintance.Phone))
+            if (!HasPhoneNumber)
                 return;
 
-            //if (CapabilityService.CanSendMessages)
-            //{
-            //    var messageTask = MessagingPlugin.SmsMessenger;
-            //    if (messageTask.CanSendSms)
-            //        messageTask.SendSms(Acquaintance.Phone.SanitizePhoneNumber());
-            //}
-            //else
-            //{
-            //    MessagingService.Current.SendMessage<MessagingServiceAlert>(MessageKeys.DisplayAlert, new MessagingServiceAlert()
-            //        {
-            //            Title = "Simulator Not Supported", 
-            //            Message = "Messaging is not supported in the iOS simulator.",
-            //            Cancel = "OK"
-            //        });
-            //}
+            try
+            {
+                await Sms.ComposeAsync(new SmsMessage(string.Empty, Acquaintance.Phone.SanitizePhoneNumber()));
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                MessagingService.Current.SendMessage<MessagingServiceAlert>(MessageKeys.DisplayAlert, new MessagingServiceAlert()
+                {
+                    Title = "Not Supported",
+                    Message = "Sms is not supported on this device.",
+                    Cancel = "OK"
+                });
+            }
         }
 
-        Command _EmailCommand;
+        AsyncCommand emailCommand;
 
-        public Command EmailCommand => _EmailCommand ??
-                                       (_EmailCommand = new Command(ExecuteEmailCommandCommand));
+        public AsyncCommand EmailCommand => 
+            emailCommand ??= new AsyncCommand(ExecuteEmailCommandCommand);
 
-        void ExecuteEmailCommandCommand()
+        async Task ExecuteEmailCommandCommand()
         {
             if (string.IsNullOrWhiteSpace(Acquaintance.Email))
                 return;
 
-            //if (CapabilityService.CanSendEmail)
-            //{
-            //    var emailTask = MessagingPlugin.EmailMessenger;
-            //    if (emailTask.CanSendEmail)
-            //        emailTask.SendEmail(Acquaintance.Email);
-            //}
-            //else
-            //{
-            //    MessagingService.Current.SendMessage<MessagingServiceAlert>(MessageKeys.DisplayAlert, new MessagingServiceAlert()
-            //        {
-            //            Title = "Simulator Not Supported", 
-            //            Message = "Email composition is not supported in the iOS simulator.",
-            //            Cancel = "OK"
-            //        });
-            //}
-        }
-
-        Command _GetDirectionsCommand;
-
-        public Command GetDirectionsCommand
-        {
-            get
+            try
             {
-                return _GetDirectionsCommand ??
-                (_GetDirectionsCommand = new Command(async() => 
-                        await ExecuteGetDirectionsCommand()));
+                await Email.ComposeAsync(string.Empty, string.Empty, Acquaintance.Email);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                MessagingService.Current.SendMessage<MessagingServiceAlert>(MessageKeys.DisplayAlert, new MessagingServiceAlert()
+                {
+                    Title = "Not Supported",
+                    Message = "Email is not supported on this device.",
+                    Cancel = "OK"
+                });
             }
         }
 
+        AsyncCommand getDirectionsCommand;
+
+        public AsyncCommand GetDirectionsCommand => 
+            getDirectionsCommand ??= new AsyncCommand(ExecuteGetDirectionsCommand);
+
 
         async Task ExecuteGetDirectionsCommand()
-        {
-            var position = await GetPosition();
-
-            var pin = new Pin() { Position = position };
-
-            //await CrossExternalMaps.Current.NavigateTo(pin.Label, pin.Position.Latitude, pin.Position.Longitude, NavigationType.Driving);
+        {           
+            try
+            {
+                await Xamarin.Essentials.Map.OpenAsync(new Placemark
+                {
+                    AdminArea = Acquaintance.State,
+                    Locality = Acquaintance.City,
+                    PostalCode = Acquaintance.PostalCode,
+                    Thoroughfare = Acquaintance.AddressString
+                });
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                MessagingService.Current.SendMessage<MessagingServiceAlert>(MessageKeys.DisplayAlert, new MessagingServiceAlert()
+                {
+                    Title = "Not Supported",
+                    Message = "Unable to open a map application on the device..",
+                    Cancel = "OK"
+                });
+            }
         }
 
         public void SetupMap()

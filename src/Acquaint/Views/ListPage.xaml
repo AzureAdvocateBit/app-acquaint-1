@@ -4,7 +4,11 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:converters="clr-namespace:Acquaint.Converters"
+    xmlns:models="clr-namespace:Acquaint.Models"
+    xmlns:pancakeview="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
     xmlns:viewmodels="clr-namespace:Acquaint.ViewModels"
+    Title="Acquaintances"
+    BackgroundColor="{DynamicResource WindowBackgroundColor}"
     NavigationPage.BackButtonTitle="List">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -13,98 +17,114 @@
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <!--  The Refresh ToolBarItem is only for UWP. See code-behind.  -->
-        <ToolbarItem
-            x:Name="refreshToolbarItem"
-            Command="{Binding RefreshAcquaintancesCommand}"
-            Icon="refresh.png"
-            Text="Refresh" />
+        <ToolbarItem Command="{Binding RefreshAcquaintancesCommand}" Text="Refresh">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{DynamicResource MaterialFontFamily}" Glyph="{StaticResource IconRefresh}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
         <!--  The Settings ToolBarItem is present on all platforms.  -->
-        <ToolbarItem
-            x:Name="settingsToolbarItem"
-            Command="{Binding ShowSettingsCommand}"
-            Icon="settings.png"
-            Text="Settings" />
-        <!--  The Add Acquaintance ToolBarItem is removed for Android. See code-behind.  -->
-        <ToolbarItem
-            x:Name="addAcquaintanceToolbarItem"
-            Command="{Binding NewAcquaintanceCommand}"
-            Icon="add.png"
-            Text="New" />
+        <ToolbarItem Command="{Binding ShowSettingsCommand}" Text="Settings">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{DynamicResource MaterialFontFamily}" Glyph="{StaticResource IconSettings}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
-    <ContentPage.Content>
-        <AbsoluteLayout>
-            <AbsoluteLayout.Children>
-                <ListView
-                    AbsoluteLayout.LayoutBounds="0,0,1,1"
-                    AbsoluteLayout.LayoutFlags="All"
-                    CachingStrategy="RecycleElement"
-                    HasUnevenRows="false"
-                    IsPullToRefreshEnabled="true"
-                    IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                    ItemTapped="ItemTapped"
-                    ItemsSource="{Binding Acquaintances}"
-                    RefreshCommand="{Binding RefreshAcquaintancesCommand}"
-                    RowHeight="60">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell Height="60" StyleId="disclosure">
-                                <ViewCell.ContextActions>
-                                    <MenuItem
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ListViewModel}}, Path=EmailCommand}"
-                                        CommandParameter="{Binding Id}"
-                                        Text="Email" />
-                                    <MenuItem
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ListViewModel}}, Path=MessageNumberCommand}"
-                                        CommandParameter="{Binding Id}"
-                                        Text="Text" />
-                                    <MenuItem
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ListViewModel}}, Path=DialNumberCommand}"
-                                        CommandParameter="{Binding Id}"
-                                        Text="Call" />
-                                </ViewCell.ContextActions>
-                                <ContentView Padding="10,0">
-                                    <StackLayout Orientation="Horizontal" Spacing="0">
-                                        <ContentView Margin="3" WidthRequest="54">
-                                            <Image
-                                                HeightRequest="50"
-                                                HorizontalOptions="Center"
-                                                Source="{Binding SmallPhotoUrl}"
-                                                VerticalOptions="Center"
-                                                WidthRequest="50">
-                                                <!--<ffimageloading:CachedImage.Transformations>
-															<fftransformations:CircleTransformation />
-														</ffimageloading:CachedImage.Transformations>-->
-                                            </Image>
-                                        </ContentView>
-                                        <ContentView Padding="10,0,0,0">
-                                            <StackLayout Spacing="0">
-                                                <Label
-                                                    HeightRequest="20"
-                                                    LineBreakMode="TailTruncation"
-                                                    Text="{Binding DisplayLastNameFirst}"
-                                                    VerticalTextAlignment="End" />
-                                                <Label
-                                                    FontSize="Micro"
-                                                    HeightRequest="20"
-                                                    LineBreakMode="TailTruncation"
-                                                    Text="{Binding Company}"
-                                                    VerticalTextAlignment="End" />
-                                                <Label
-                                                    FontSize="Micro"
-                                                    HeightRequest="20"
-                                                    LineBreakMode="TailTruncation"
-                                                    Text="{Binding JobTitle}"
-                                                    TextColor="Silver"
-                                                    VerticalTextAlignment="Start" />
-                                            </StackLayout>
-                                        </ContentView>
-                                    </StackLayout>
-                                </ContentView>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </AbsoluteLayout.Children>
-        </AbsoluteLayout>
-    </ContentPage.Content>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Frame Style="{DynamicResource FrameStyle}"
+               Padding="0" Margin="12,12,12,0">
+            <SearchBar BackgroundColor="{DynamicResource SystemGray4}"
+                       CancelButtonColor="{DynamicResource SystemGray}"
+                       TextColor="{DynamicResource SystemGray}"
+                       Placeholder="Search acquaintances"
+                       PlaceholderColor="{DynamicResource SystemGray2}"/>
+        </Frame>
+        <ListView
+            Grid.Row="1"
+            CachingStrategy="RecycleElement"
+            HasUnevenRows="True"
+            IsPullToRefreshEnabled="true"
+            IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+            ItemTapped="ItemTapped"
+            ItemsSource="{Binding Acquaintances}"
+            RefreshCommand="{Binding RefreshCommand}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell x:DataType="models:Acquaintance">
+                        <ViewCell.ContextActions>
+                            <MenuItem
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ListViewModel}}, Path=EmailCommand}"
+                                CommandParameter="{Binding Id}"
+                                Text="Email" />
+                            <MenuItem
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ListViewModel}}, Path=MessageNumberCommand}"
+                                CommandParameter="{Binding Id}"
+                                Text="Text" />
+                            <MenuItem
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ListViewModel}}, Path=DialNumberCommand}"
+                                CommandParameter="{Binding Id}"
+                                Text="Call" />
+                        </ViewCell.ContextActions>
+                        <Frame Margin="12,6" Style="{DynamicResource FrameStyle}">
+                            <Grid ColumnSpacing="12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <pancakeview:PancakeView
+                                    CornerRadius="40,15,15,40"
+                                    HeightRequest="100"
+                                    HorizontalOptions="Center"
+                                    IsClippedToBounds="True"
+                                    Style="{DynamicResource PancakeStyle}"
+                                    VerticalOptions="Center"
+                                    WidthRequest="100">
+                                    <Image Aspect="AspectFill" Source="{Binding SmallPhotoUrl}" />
+                                </pancakeview:PancakeView>
+                                <StackLayout Grid.Column="1" VerticalOptions="Center">
+                                    <Label Style="{DynamicResource LargeLabelStyle}" Text="{Binding DisplayLastNameFirst}" />
+                                    <Label Style="{DynamicResource SmallLabelStyle}" Text="{Binding Company}" />
+                                    <Label
+                                        Style="{DynamicResource MicroLabelStyle}"
+                                        Text="{Binding JobTitle}"
+                                        TextColor="{DynamicResource AccentColor}" />
+                                </StackLayout>
+                            </Grid>
+                        </Frame>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Frame
+            Grid.RowSpan="2"
+            Margin="8"
+            Padding="0"
+            CornerRadius="28"
+            HasShadow="True"
+            HeightRequest="56"
+            HorizontalOptions="End"
+            Style="{DynamicResource FrameStyle}"
+            VerticalOptions="End"
+            WidthRequest="56">
+            <ImageButton
+                Command="{Binding NewCommand}"
+                HorizontalOptions="FillAndExpand"
+                Padding="12"
+                Style="{DynamicResource FloatingActionButtonStyle}"
+                VerticalOptions="FillAndExpand">
+                <ImageButton.Source>
+                    <FontImageSource
+                        FontFamily="{DynamicResource MaterialFontFamily}"
+                        Glyph="{StaticResource IconAdd}"
+                        Color="{DynamicResource PrimaryColor}" />
+                </ImageButton.Source>
+            </ImageButton>
+        </Frame>
+
+    </Grid>
 </ContentPage>

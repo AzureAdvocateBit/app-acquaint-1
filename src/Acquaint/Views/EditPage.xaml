@@ -1,39 +1,303 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Acquaint.Views.EditPage">
-	<ContentPage.ToolbarItems>
-		<ToolbarItem Text="Save" Icon="save.png" Command="{Binding SaveAcquaintanceCommand}" />
-	</ContentPage.ToolbarItems>
-	<ContentPage.Content>
-		<ContentView x:Name="TopContentView">
-			<ContentView.Padding>
-				<OnPlatform x:TypeArguments="Thickness" WinPhone="10" />
-			</ContentView.Padding>
-			<ContentView.Content>
-				<TableView Intent="Settings" BackgroundColor="White">
-					<TableRoot>
-						<TableSection Title="Name">
-							<EntryCell Label="First" Text="{Binding Acquaintance.FirstName}" Keyboard="Text" />
-							<EntryCell Label="Last" Text="{Binding Acquaintance.LastName}" Keyboard="Text" />
-						</TableSection>
-						<TableSection Title="Employment">
-							<EntryCell Label="Company" Text="{Binding Acquaintance.Company}" Keyboard="Text" />
-							<EntryCell Label="Title" Text="{Binding Acquaintance.JobTitle}" Keyboard="Text" />
-						</TableSection>
-						<TableSection Title="Contact">
-							<EntryCell Label="Phone" Text="{Binding Acquaintance.Phone}" Keyboard="Telephone" />
-							<EntryCell Label="Email" Text="{Binding Acquaintance.Email}" Keyboard="Email" />
-						</TableSection>
-						<TableSection Title="Address">
-							<EntryCell Label="Street" Text="{Binding Acquaintance.Street}" Keyboard="Text" />
-							<EntryCell Label="City" Text="{Binding Acquaintance.City}" Keyboard="Text" />
-							<EntryCell Label="State" Text="{Binding Acquaintance.State}" Keyboard="Text" PropertyChanged="StateEntry_PropertyChanged" />
-							<EntryCell Label="ZIP" Text="{Binding Acquaintance.PostalCode}" Keyboard="Numeric" PropertyChanged="PostalCode_PropertyChanged" />
-						</TableSection>
-					</TableRoot>
-				</TableView>
-			</ContentView.Content>
-		</ContentView>
-	</ContentPage.Content>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="Acquaint.Views.EditPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="clr-namespace:Acquaint.ViewModels"
+    Title="{Binding Title}"
+    BackgroundColor="{DynamicResource WindowBackgroundColor}"
+    mc:Ignorable="d">
+    <d:ContentPage.BindingContext>
+        <viewmodels:EditViewModel />
+    </d:ContentPage.BindingContext>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding SaveAcquaintanceCommand}" Text="Save">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{DynamicResource MaterialFontFamily}" Glyph="{StaticResource IconSave}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <ScrollView>
+        <StackLayout Padding="12" BindingContext="{Binding Acquaintance}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Label
+                    Grid.ColumnSpan="2"
+                    Grid.Row="0"
+                    Style="{DynamicResource LargeLabelStyle}"
+                    Text="Name" />
+
+                <Image VerticalOptions="Center"
+                       Grid.Row="1"
+                       WidthRequest="36"
+                       HeightRequest="36">
+                    <Image.Source>
+                        <FontImageSource
+                            FontFamily="{DynamicResource MaterialFontFamily}"
+                            Size="24"
+                            Color="{DynamicResource SystemGray2}"
+                            Glyph="{StaticResource IconPerson}"/>
+                    </Image.Source>
+                </Image>                
+                
+
+                <Entry
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Keyboard="Text"
+                    Placeholder="First name"
+                    Style="{DynamicResource EntryStyle}"
+                    Text="{Binding FirstName}" />
+                <Entry
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    Keyboard="Text"
+                    Placeholder="Last name"
+                    Style="{DynamicResource EntryStyle}"
+                    Text="{Binding LastName}" />
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Label
+                    Grid.ColumnSpan="2"
+                    Grid.Row="0"
+                    Style="{DynamicResource LargeLabelStyle}"
+                    Text="Employment" />
+
+                <Image VerticalOptions="Center"
+                       Grid.Row="1"
+                       WidthRequest="36"
+                       HeightRequest="36">
+                    <Image.Source>
+                        <FontImageSource
+                            FontFamily="{DynamicResource MaterialFontFamily}"
+                            Size="24"
+                            Color="{DynamicResource SystemGray2}"
+                            Glyph="{StaticResource IconEmployment}"/>
+                    </Image.Source>
+                </Image>
+
+
+                <Entry
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Keyboard="Text"
+                    Placeholder="Company"
+                    Style="{DynamicResource EntryStyle}"
+                    Text="{Binding Company}" />
+                <Entry
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    Keyboard="Text"
+                    Placeholder="Title"
+                    Style="{DynamicResource EntryStyle}"
+                    Text="{Binding JobTitle}" />
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Label
+                    Grid.ColumnSpan="2"
+                    Grid.Row="0"
+                    Style="{DynamicResource LargeLabelStyle}"
+                    Text="Contact" />
+
+                <Image VerticalOptions="Center"
+                       Grid.Row="1"
+                       WidthRequest="36"
+                       HeightRequest="36">
+                    <Image.Source>
+                        <FontImageSource
+                            FontFamily="{DynamicResource MaterialFontFamily}"
+                            Size="24"
+                            Color="{DynamicResource SystemGray2}"
+                            Glyph="{StaticResource IconPhone}"/>
+                    </Image.Source>
+                </Image>
+
+
+                <Entry
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Keyboard="Telephone"
+                    Placeholder="Phone number"
+                    Style="{DynamicResource EntryStyle}"
+                    Text="{Binding Phone}" />
+
+                <Image VerticalOptions="Center"
+                       Grid.Row="2"
+                       WidthRequest="36"
+                       HeightRequest="36">
+                    <Image.Source>
+                        <FontImageSource
+                            FontFamily="{DynamicResource MaterialFontFamily}"
+                            Size="24"
+                            Color="{DynamicResource SystemGray2}"
+                            Glyph="{StaticResource IconEmail}"/>
+                    </Image.Source>
+                </Image>
+                <Entry
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    Keyboard="Email"
+                    Placeholder="Email address"
+                    Style="{DynamicResource EntryStyle}"
+                    Text="{Binding Email}" />
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Label
+                    Grid.ColumnSpan="2"
+                    Grid.Row="0"
+                    Style="{DynamicResource LargeLabelStyle}"
+                    Text="Address" />
+
+                <Image VerticalOptions="Center"
+                       Grid.Row="1"
+                       WidthRequest="36"
+                       HeightRequest="36">
+                    <Image.Source>
+                        <FontImageSource
+                            FontFamily="{DynamicResource MaterialFontFamily}"
+                            Size="24"
+                            Color="{DynamicResource SystemGray2}"
+                            Glyph="{StaticResource IconAddress}"/>
+                    </Image.Source>
+                </Image>
+
+
+                <Entry
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Keyboard="Text"
+                    Placeholder="Street"
+                    Style="{DynamicResource EntryStyle}"
+                    Text="{Binding Street}" />
+                <Entry
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    Keyboard="Text"
+                    Placeholder="City"
+                    Style="{DynamicResource EntryStyle}"
+                    Text="{Binding City}" />
+
+
+                <Entry
+                    Grid.Column="1"
+                    Grid.Row="3"
+                    Keyboard="Text"
+                    Placeholder="State"
+                    Style="{DynamicResource EntryStyle}"
+                    Text="{Binding State}" />
+
+
+                <Entry
+                    Grid.Column="1"
+                    Grid.Row="4"
+                    Keyboard="Numeric"
+                    Placeholder="Zip code"
+                    Style="{DynamicResource EntryStyle}"
+                    Text="{Binding PostalCode}" />
+            </Grid>
+        </StackLayout>
+    </ScrollView>
+    <ContentPage.Content>
+        <ContentView x:Name="TopContentView">
+            <ContentView.Padding>
+                <OnPlatform x:TypeArguments="Thickness" WinPhone="10" />
+            </ContentView.Padding>
+            <ContentView.Content>
+                <TableView BackgroundColor="White" Intent="Settings">
+                    <TableRoot>
+                        <TableSection Title="Name">
+                            <EntryCell
+                                Keyboard="Text"
+                                Label="First"
+                                Text="{Binding Acquaintance.FirstName}" />
+                            <EntryCell
+                                Keyboard="Text"
+                                Label="Last"
+                                Text="{Binding Acquaintance.LastName}" />
+                        </TableSection>
+                        <TableSection Title="Employment">
+                            <EntryCell
+                                Keyboard="Text"
+                                Label="Company"
+                                Text="{Binding Acquaintance.Company}" />
+                            <EntryCell
+                                Keyboard="Text"
+                                Label="Title"
+                                Text="{Binding Acquaintance.JobTitle}" />
+                        </TableSection>
+                        <TableSection Title="Contact">
+                            <EntryCell
+                                Keyboard="Telephone"
+                                Label="Phone"
+                                Text="{Binding Acquaintance.Phone}" />
+                            <EntryCell
+                                Keyboard="Email"
+                                Label="Email"
+                                Text="{Binding Acquaintance.Email}" />
+                        </TableSection>
+                        <TableSection Title="Address">
+                            <EntryCell
+                                Keyboard="Text"
+                                Label="Street"
+                                Text="{Binding Acquaintance.Street}" />
+                            <EntryCell
+                                Keyboard="Text"
+                                Label="City"
+                                Text="{Binding Acquaintance.City}" />
+                            <EntryCell
+                                Keyboard="Text"
+                                Label="State"
+                                PropertyChanged="StateEntry_PropertyChanged"
+                                Text="{Binding Acquaintance.State}" />
+                            <EntryCell
+                                Keyboard="Numeric"
+                                Label="ZIP"
+                                PropertyChanged="PostalCode_PropertyChanged"
+                                Text="{Binding Acquaintance.PostalCode}" />
+                        </TableSection>
+                    </TableRoot>
+                </TableView>
+            </ContentView.Content>
+        </ContentView>
+    </ContentPage.Content>
 </ContentPage>

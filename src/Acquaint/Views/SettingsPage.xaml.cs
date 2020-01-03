@@ -1,4 +1,5 @@
-﻿using Acquaint.Constants;
+﻿using System;
+using Acquaint.Constants;
 using Acquaint.Services;
 using Acquaint.ViewModels;
 using Xamarin.Forms;
@@ -14,18 +15,11 @@ namespace Acquaint.Views
 			InitializeComponent();
 
             BindingContext = new SettingsViewModel();
-
-            MessagingService.Current.Subscribe(MessageKeys.DataPartitionPhraseValidation, (service) =>
-            {
-                DataPartitionPhraseEntry.PlaceholderColor = Color.Red;
-                DataPartitionPhraseEntry.Focus();
-            });
-
-            MessagingService.Current.Subscribe(MessageKeys.BackendUrlValidation, (service) =>
-            {
-                BackendServiceUrlEntry.PlaceholderColor = Color.Red;
-            });
         }
-	}
+        async void CloseButtonClicked(object sender, EventArgs e)
+        {
+            await Navigation.PopModalAsync();
+        }
+    }
 }
 

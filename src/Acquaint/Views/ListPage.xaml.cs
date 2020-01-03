@@ -13,11 +13,7 @@ namespace Acquaint.Views
 		public ListPage()
 		{
 			InitializeComponent();
-
-		    if (Device.OS != TargetPlatform.Windows)
-		    {
-		        ToolbarItems.Remove(refreshToolbarItem);
-		    }
+            BindingContext = new ListViewModel();
 		}
 
 		/// <summary>

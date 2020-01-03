@@ -96,6 +96,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Environment.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -153,6 +154,7 @@
     <Content Include="message.png" />
     <Content Include="refresh.png" />
     <Content Include="settings.png" />
+    <Content Include="Assets\Fonts\materialdesignicons-webfont.ttf" />
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="phone.png" />
     <Content Include="placeholderProfileImage.png" />

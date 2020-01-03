@@ -153,7 +153,6 @@ namespace Acquaint.Models
 
         [JsonIgnore]
         public string StatePostal => State + " " + PostalCode;
-
       
         public override string ToString() => $"{FirstName} {LastName}";
     }

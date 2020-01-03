@@ -11,31 +11,34 @@ namespace Acquaint.ViewModels
 	{
 		bool isNewAcquaintance;
 
-		public EditViewModel(Acquaintance acquaintance = null)
+        public EditViewModel()
+        {
+            Acquaintance = new Acquaintance();
+            isNewAcquaintance = true;
+            Title = "New Acquaintance";
+        }
+		public EditViewModel(Acquaintance acquaintance)
 		{
 			if (acquaintance == null)
 			{
 				Acquaintance = new Acquaintance();
 				isNewAcquaintance = true;
-			}
+                Title = "New Acquaintance";
+            }
 			else
 			{
-                // TODO Figure out existing mapping
-				/*Mapper.Initialize(cfg => cfg.CreateMap<Acquaintance, Acquaintance>());
+                Acquaintance = acquaintance.Clone();
+                Title = "Edit Acquaintance";
+            }
 
-				// Use AutoMapper to make a copy of the Acquaintance.
-				// On the edit screen, we want to only deal with this copy until we're ready to save.
-				// If we didn't make this copy, then the item would be updated instantaneously without saving, 
-				// by virtue of the ObservableObject type that the Acquaint model inherits from.
-				Acquaintance = Mapper.Map<Acquaintance>(acquaintance);*/
-			}
+
 		}
 
 		public Acquaintance Acquaintance { private set; get; }
 
-		Command _SaveAcquaintanceCommand;
+		Command saveAcquaintanceCommand;
 
-		public Command SaveAcquaintanceCommand => _SaveAcquaintanceCommand ?? (_SaveAcquaintanceCommand = new Command(async () => await ExecuteSaveAcquaintanceCommand()));
+		public Command SaveAcquaintanceCommand => saveAcquaintanceCommand ?? (saveAcquaintanceCommand = new Command(async () => await ExecuteSaveAcquaintanceCommand()));
 
 		async Task ExecuteSaveAcquaintanceCommand()
 		{

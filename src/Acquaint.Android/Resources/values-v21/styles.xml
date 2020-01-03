@@ -1,8 +1,16 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
-
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <resources>
-  <style name="MainTheme" parent="MainTheme.Base">
+  <!--
+        Base application theme for API 21+. This theme completely replaces
+        MyTheme from BOTH res/values/styles.xml on API 21+ devices.
+    -->
+  <style name="MyTheme" parent="MyTheme.Base">
+  </style>
+
+  <style name="SplashTheme" parent="SplashTheme.Base">
+    <item name="android:windowTranslucentNavigation">true</item>
     <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     <item name="android:statusBarColor">@android:color/transparent</item>
   </style>
+
 </resources>

@@ -20,99 +20,64 @@ namespace Acquaint.ViewModels
             SubscribeToUpdateAcquaintanceMessages();
 
             SubscribeToDeleteAcquaintanceMessages();
-
-            LoadCommand = new AsyncCommand(ExecuteLoadCommand);
-
-            RefreshCommand = new AsyncCommand(ExecuteRefreshCommand);
-
-            NewCommand = new AsyncCommand(ExecuteNewCommand);
         }
 
 
         public ObservableRangeCollection<Acquaintance> Acquaintances { get; } = new ObservableRangeCollection<Acquaintance>();
 
-        /// <summary>
-        /// Command to load acquaintances
-        /// </summary>
-        public AsyncCommand LoadCommand { get; }
+        AsyncCommand loadCommand;
+        public AsyncCommand LoadCommand => loadCommand ??=
+            new AsyncCommand(ExecuteLoadCommand);
 
         public async Task ExecuteLoadCommand()
-        {
-            LoadCommand.RaiseCanExecuteChanged();
-
-
-            if (Settings.LocalDataResetIsRequested)
-                Acquaintances.Clear();
-
-            if (Acquaintances.Count < 1 || !Settings.DataIsSeeded || Settings.ClearImageCacheIsRequested)
+        { 
+            if (Acquaintances.Count < 1)
                 await FetchAcquaintances();
-
-            LoadCommand.RaiseCanExecuteChanged();
         }
 
-        public AsyncCommand RefreshCommand { get; }
+        AsyncCommand refreshCommand;
+        public AsyncCommand RefreshCommand => refreshCommand ??=
+            new AsyncCommand(ExecuteRefreshCommand);
 
         async Task ExecuteRefreshCommand()
         {
-            RefreshCommand.RaiseCanExecuteChanged();
-
             await FetchAcquaintances();
-
-            RefreshCommand.RaiseCanExecuteChanged();
         }
 
         async Task FetchAcquaintances()
         {
+            if (IsBusy)
+                return;
+
             IsBusy = true;
 
+            await Task.Delay(1000);
             var items = await DataSource.GetItems();
 
             Acquaintances.ReplaceRange(items);
 
-            // ensuring that this flag is reset
-            Settings.ClearImageCacheIsRequested = false;
 
             IsBusy = false;
         }
 
-        /// <summary>
-        /// Command to create new acquaintance
-        /// </summary>
-        public AsyncCommand NewCommand { get; }
+        AsyncCommand newCommand;
+        public AsyncCommand NewCommand => newCommand ??=
+            new AsyncCommand(ExecuteNewCommand);
         Task ExecuteNewCommand() => PushAsync(new EditPage());
 
-        /// <summary>
-        /// Command to show settings
-        /// </summary>
-        public AsyncCommand ShowSettingsCommand { get; }
+        AsyncCommand showSettingsCommand;
+        public AsyncCommand ShowSettingsCommand => showSettingsCommand ??=
+            new AsyncCommand(ExecuteShowSettingsCommand);
 
-        Task ExecuteShowSettingsCommand()
-        {
-            var navPage = new NavigationPage(
-                new SettingsPage())
-            {
-                BarBackgroundColor = Color.FromHex("547799")
-            };
-            
-            navPage.BarTextColor = Color.White;
+        Task ExecuteShowSettingsCommand() => PushModalAsync(new SettingsPage());
 
-            return PushModalAsync(navPage);
-        }
-
-        Command _DialNumberCommand;
+        Command dialNumberCommand;
 
         /// <summary>
         /// Command to dial acquaintance phone number
         /// </summary>
-        public Command DialNumberCommand
-        {
-            get
-            {
-                return _DialNumberCommand ??
-                (_DialNumberCommand = new Command((parameter) =>
-                        ExecuteDialNumberCommand((string)parameter)));
-            }
-        }
+        public Command DialNumberCommand => dialNumberCommand ??=
+            new Command((parameter) =>ExecuteDialNumberCommand((string)parameter));
 
         void ExecuteDialNumberCommand(string acquaintanceId)
         {
@@ -147,15 +112,8 @@ namespace Acquaint.ViewModels
         /// <summary>
         /// Command to message acquaintance phone number
         /// </summary>
-        public Command MessageNumberCommand
-        {
-            get
-            {
-                return messageNumberCommand ??
-                (messageNumberCommand = new Command((parameter) =>
-                        ExecuteMessageNumberCommand((string)parameter)));
-            }
-        }
+        public Command MessageNumberCommand => messageNumberCommand ??=
+                    new Command((parameter) => ExecuteMessageNumberCommand((string)parameter));
 
         void ExecuteMessageNumberCommand(string acquaintanceId)
         {
@@ -185,19 +143,8 @@ namespace Acquaint.ViewModels
         }
 
         Command emailCommand;
-
-        /// <summary>
-        /// Command to email acquaintance
-        /// </summary>
-        public Command EmailCommand
-        {
-            get
-            {
-                return emailCommand ??
-                (emailCommand = new Command((parameter) =>
-                        ExecuteEmailCommand((string)parameter)));
-            }
-        }
+        public Command EmailCommand => emailCommand ??=
+               new Command((parameter) => ExecuteEmailCommand((string)parameter));
 
         void ExecuteEmailCommand(string acquaintanceId)
         {
