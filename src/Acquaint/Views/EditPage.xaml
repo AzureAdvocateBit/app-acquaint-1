@@ -6,7 +6,9 @@
     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewmodels="clr-namespace:Acquaint.ViewModels"
+    xmlns:models="clr-namespace:Acquaint.Models"
     Title="{Binding Title}"
+    x:DataType="viewmodels:EditViewModel"
     BackgroundColor="{DynamicResource WindowBackgroundColor}"
     mc:Ignorable="d">
     <d:ContentPage.BindingContext>
@@ -21,8 +23,9 @@
     </ContentPage.ToolbarItems>
 
     <ScrollView>
-        <StackLayout Padding="12" BindingContext="{Binding Acquaintance}">
-            <Grid>
+        <StackLayout Padding="12" 
+                     BindingContext="{Binding Acquaintance}">
+            <Grid x:DataType="models:Acquaintance">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -33,41 +36,42 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Label
-                    Grid.ColumnSpan="2"
                     Grid.Row="0"
+                    Grid.ColumnSpan="2"
                     Style="{DynamicResource LargeLabelStyle}"
                     Text="Name" />
 
-                <Image VerticalOptions="Center"
-                       Grid.Row="1"
-                       WidthRequest="36"
-                       HeightRequest="36">
+                <Image
+                    Grid.Row="1"
+                    HeightRequest="36"
+                    VerticalOptions="Center"
+                    WidthRequest="36">
                     <Image.Source>
                         <FontImageSource
                             FontFamily="{DynamicResource MaterialFontFamily}"
+                            Glyph="{StaticResource IconPerson}"
                             Size="24"
-                            Color="{DynamicResource SystemGray2}"
-                            Glyph="{StaticResource IconPerson}"/>
+                            Color="{DynamicResource SystemGray2}" />
                     </Image.Source>
-                </Image>                
-                
+                </Image>
+
 
                 <Entry
-                    Grid.Column="1"
                     Grid.Row="1"
+                    Grid.Column="1"
                     Keyboard="Text"
                     Placeholder="First name"
                     Style="{DynamicResource EntryStyle}"
                     Text="{Binding FirstName}" />
                 <Entry
-                    Grid.Column="1"
                     Grid.Row="2"
+                    Grid.Column="1"
                     Keyboard="Text"
                     Placeholder="Last name"
                     Style="{DynamicResource EntryStyle}"
                     Text="{Binding LastName}" />
             </Grid>
-            <Grid>
+            <Grid x:DataType="models:Acquaintance">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -78,41 +82,42 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Label
-                    Grid.ColumnSpan="2"
                     Grid.Row="0"
+                    Grid.ColumnSpan="2"
                     Style="{DynamicResource LargeLabelStyle}"
                     Text="Employment" />
 
-                <Image VerticalOptions="Center"
-                       Grid.Row="1"
-                       WidthRequest="36"
-                       HeightRequest="36">
+                <Image
+                    Grid.Row="1"
+                    HeightRequest="36"
+                    VerticalOptions="Center"
+                    WidthRequest="36">
                     <Image.Source>
                         <FontImageSource
                             FontFamily="{DynamicResource MaterialFontFamily}"
+                            Glyph="{StaticResource IconEmployment}"
                             Size="24"
-                            Color="{DynamicResource SystemGray2}"
-                            Glyph="{StaticResource IconEmployment}"/>
+                            Color="{DynamicResource SystemGray2}" />
                     </Image.Source>
                 </Image>
 
 
                 <Entry
-                    Grid.Column="1"
                     Grid.Row="1"
+                    Grid.Column="1"
                     Keyboard="Text"
                     Placeholder="Company"
                     Style="{DynamicResource EntryStyle}"
                     Text="{Binding Company}" />
                 <Entry
-                    Grid.Column="1"
                     Grid.Row="2"
+                    Grid.Column="1"
                     Keyboard="Text"
                     Placeholder="Title"
                     Style="{DynamicResource EntryStyle}"
                     Text="{Binding JobTitle}" />
             </Grid>
-            <Grid>
+            <Grid x:DataType="models:Acquaintance">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -123,54 +128,56 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Label
-                    Grid.ColumnSpan="2"
                     Grid.Row="0"
+                    Grid.ColumnSpan="2"
                     Style="{DynamicResource LargeLabelStyle}"
                     Text="Contact" />
 
-                <Image VerticalOptions="Center"
-                       Grid.Row="1"
-                       WidthRequest="36"
-                       HeightRequest="36">
+                <Image
+                    Grid.Row="1"
+                    HeightRequest="36"
+                    VerticalOptions="Center"
+                    WidthRequest="36">
                     <Image.Source>
                         <FontImageSource
                             FontFamily="{DynamicResource MaterialFontFamily}"
+                            Glyph="{StaticResource IconPhone}"
                             Size="24"
-                            Color="{DynamicResource SystemGray2}"
-                            Glyph="{StaticResource IconPhone}"/>
+                            Color="{DynamicResource SystemGray2}" />
                     </Image.Source>
                 </Image>
 
 
                 <Entry
-                    Grid.Column="1"
                     Grid.Row="1"
+                    Grid.Column="1"
                     Keyboard="Telephone"
                     Placeholder="Phone number"
                     Style="{DynamicResource EntryStyle}"
                     Text="{Binding Phone}" />
 
-                <Image VerticalOptions="Center"
-                       Grid.Row="2"
-                       WidthRequest="36"
-                       HeightRequest="36">
+                <Image
+                    Grid.Row="2"
+                    HeightRequest="36"
+                    VerticalOptions="Center"
+                    WidthRequest="36">
                     <Image.Source>
                         <FontImageSource
                             FontFamily="{DynamicResource MaterialFontFamily}"
+                            Glyph="{StaticResource IconEmail}"
                             Size="24"
-                            Color="{DynamicResource SystemGray2}"
-                            Glyph="{StaticResource IconEmail}"/>
+                            Color="{DynamicResource SystemGray2}" />
                     </Image.Source>
                 </Image>
                 <Entry
-                    Grid.Column="1"
                     Grid.Row="2"
+                    Grid.Column="1"
                     Keyboard="Email"
                     Placeholder="Email address"
                     Style="{DynamicResource EntryStyle}"
                     Text="{Binding Email}" />
             </Grid>
-            <Grid>
+            <Grid x:DataType="models:Acquaintance">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -183,35 +190,36 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Label
-                    Grid.ColumnSpan="2"
                     Grid.Row="0"
+                    Grid.ColumnSpan="2"
                     Style="{DynamicResource LargeLabelStyle}"
                     Text="Address" />
 
-                <Image VerticalOptions="Center"
-                       Grid.Row="1"
-                       WidthRequest="36"
-                       HeightRequest="36">
+                <Image
+                    Grid.Row="1"
+                    HeightRequest="36"
+                    VerticalOptions="Center"
+                    WidthRequest="36">
                     <Image.Source>
                         <FontImageSource
                             FontFamily="{DynamicResource MaterialFontFamily}"
+                            Glyph="{StaticResource IconAddress}"
                             Size="24"
-                            Color="{DynamicResource SystemGray2}"
-                            Glyph="{StaticResource IconAddress}"/>
+                            Color="{DynamicResource SystemGray2}" />
                     </Image.Source>
                 </Image>
 
 
                 <Entry
-                    Grid.Column="1"
                     Grid.Row="1"
+                    Grid.Column="1"
                     Keyboard="Text"
                     Placeholder="Street"
                     Style="{DynamicResource EntryStyle}"
                     Text="{Binding Street}" />
                 <Entry
-                    Grid.Column="1"
                     Grid.Row="2"
+                    Grid.Column="1"
                     Keyboard="Text"
                     Placeholder="City"
                     Style="{DynamicResource EntryStyle}"
@@ -219,8 +227,8 @@
 
 
                 <Entry
-                    Grid.Column="1"
                     Grid.Row="3"
+                    Grid.Column="1"
                     Keyboard="Text"
                     Placeholder="State"
                     Style="{DynamicResource EntryStyle}"
@@ -228,8 +236,8 @@
 
 
                 <Entry
-                    Grid.Column="1"
                     Grid.Row="4"
+                    Grid.Column="1"
                     Keyboard="Numeric"
                     Placeholder="Zip code"
                     Style="{DynamicResource EntryStyle}"
@@ -237,67 +245,4 @@
             </Grid>
         </StackLayout>
     </ScrollView>
-    <ContentPage.Content>
-        <ContentView x:Name="TopContentView">
-            <ContentView.Padding>
-                <OnPlatform x:TypeArguments="Thickness" WinPhone="10" />
-            </ContentView.Padding>
-            <ContentView.Content>
-                <TableView BackgroundColor="White" Intent="Settings">
-                    <TableRoot>
-                        <TableSection Title="Name">
-                            <EntryCell
-                                Keyboard="Text"
-                                Label="First"
-                                Text="{Binding Acquaintance.FirstName}" />
-                            <EntryCell
-                                Keyboard="Text"
-                                Label="Last"
-                                Text="{Binding Acquaintance.LastName}" />
-                        </TableSection>
-                        <TableSection Title="Employment">
-                            <EntryCell
-                                Keyboard="Text"
-                                Label="Company"
-                                Text="{Binding Acquaintance.Company}" />
-                            <EntryCell
-                                Keyboard="Text"
-                                Label="Title"
-                                Text="{Binding Acquaintance.JobTitle}" />
-                        </TableSection>
-                        <TableSection Title="Contact">
-                            <EntryCell
-                                Keyboard="Telephone"
-                                Label="Phone"
-                                Text="{Binding Acquaintance.Phone}" />
-                            <EntryCell
-                                Keyboard="Email"
-                                Label="Email"
-                                Text="{Binding Acquaintance.Email}" />
-                        </TableSection>
-                        <TableSection Title="Address">
-                            <EntryCell
-                                Keyboard="Text"
-                                Label="Street"
-                                Text="{Binding Acquaintance.Street}" />
-                            <EntryCell
-                                Keyboard="Text"
-                                Label="City"
-                                Text="{Binding Acquaintance.City}" />
-                            <EntryCell
-                                Keyboard="Text"
-                                Label="State"
-                                PropertyChanged="StateEntry_PropertyChanged"
-                                Text="{Binding Acquaintance.State}" />
-                            <EntryCell
-                                Keyboard="Numeric"
-                                Label="ZIP"
-                                PropertyChanged="PostalCode_PropertyChanged"
-                                Text="{Binding Acquaintance.PostalCode}" />
-                        </TableSection>
-                    </TableRoot>
-                </TableView>
-            </ContentView.Content>
-        </ContentView>
-    </ContentPage.Content>
 </ContentPage>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 using Acquaint.Interfaces;
 using Acquaint.Models;
 using Acquaint.Services;
+using Acquaint.Util;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -49,6 +51,7 @@ namespace Acquaint.Services
 
             WriteFile();
 
+
             return Task.FromResult(true);
 		}
 
@@ -83,6 +86,7 @@ namespace Acquaint.Services
         {
             var contents = JsonSerializer.Serialize(acquaintances);
             File.WriteAllText(fullPath, contents);
+            Settings.LastUpdate = DateTime.UtcNow;
         }
 
 		#endregion

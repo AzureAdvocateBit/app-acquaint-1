@@ -7,7 +7,11 @@ namespace Acquaint.Util
 
     public static class Settings
     {
-
+        public static DateTime LastUpdate
+        {
+            get => Preferences.Get(nameof(LastUpdate), DateTime.UtcNow);
+            set => Preferences.Set(nameof(LastUpdate), value);
+        }
         public static Theme ThemeOption
         {
             get => (Theme)Preferences.Get(nameof(ThemeOption), HasDefaultThemeOption ? (int)Theme.Default : (int)Theme.Light);

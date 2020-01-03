@@ -76,9 +76,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <MtouchArch>ARMv7, ARMv7s, ARM64</MtouchArch>
+    <MtouchArch>ARM64</MtouchArch>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
-    <MtouchFloat32>true</MtouchFloat32>
+    <MtouchFloat32>false</MtouchFloat32>
     <CodesignKey>iPhone Developer</CodesignKey>
     <DeviceSpecificBuild>true</DeviceSpecificBuild>
     <MtouchDebug>true</MtouchDebug>
@@ -87,6 +87,11 @@
     </IpaPackageName>
     <MtouchI18n>other</MtouchI18n>
     <BuildIpa>true</BuildIpa>
+    <MtouchInterpreter>-all</MtouchInterpreter>
+    <MtouchFastDev>true</MtouchFastDev>
+    <MtouchEnableSGenConc>true</MtouchEnableSGenConc>
+    <MtouchLink>None</MtouchLink>
+    <MtouchHttpClientHandler>CFNetworkHandler</MtouchHttpClientHandler>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AppStore|iPhoneSimulator'">
     <OutputPath>bin\AppStore</OutputPath>
@@ -154,25 +159,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\add.png" />
-    <BundleResource Include="Resources\add%402x.png" />
-    <BundleResource Include="Resources\add%403x.png" />
-    <BundleResource Include="Resources\save.png" />
-    <BundleResource Include="Resources\save%402x.png" />
-    <BundleResource Include="Resources\save%403x.png" />
-    <BundleResource Include="Resources\phone%402x.png" />
-    <BundleResource Include="Resources\phone%403x.png" />
-    <BundleResource Include="Resources\directions.png" />
-    <BundleResource Include="Resources\directions%402x.png" />
-    <BundleResource Include="Resources\directions%403x.png" />
-    <BundleResource Include="Resources\edit%402x.png" />
-    <BundleResource Include="Resources\edit%403x.png" />
-    <BundleResource Include="Resources\email.png" />
-    <BundleResource Include="Resources\email%402x.png" />
-    <BundleResource Include="Resources\email%403x.png" />
-    <BundleResource Include="Resources\message.png" />
-    <BundleResource Include="Resources\message%402x.png" />
-    <BundleResource Include="Resources\message%403x.png" />
     <BundleResource Include="Resources\Default-568h%402x.png" />
     <BundleResource Include="Resources\Default%402x.png" />
     <BundleResource Include="Resources\Icon-60%402x.png" />
@@ -181,22 +167,6 @@
     <BundleResource Include="Resources\Icon-Small%402x.png" />
     <BundleResource Include="Resources\Icon.png" />
     <BundleResource Include="Resources\Icon-Small.png" />
-    <BundleResource Include="Resources\placeholderProfileImage%402x.png" />
-    <BundleResource Include="Resources\placeholderProfileImage%403x.png" />
-    <BundleResource Include="Resources\settings.png" />
-    <BundleResource Include="Resources\settings%402x.png" />
-    <BundleResource Include="Resources\settings%403x.png" />
-    <BundleResource Include="Resources\delete.png" />
-    <BundleResource Include="Resources\delete%402x.png" />
-    <BundleResource Include="Resources\delete%403x.png" />
-    <BundleResource Include="Resources\cancel.png" />
-    <BundleResource Include="Resources\cancel%402x.png" />
-    <BundleResource Include="Resources\cancel%403x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\edit.png" />
-    <AndroidResource Include="Resources\phone.png" />
-    <AndroidResource Include="Resources\placeholderProfileImage.png" />
   </ItemGroup>
   <ItemGroup>
     <ITunesArtwork Include="iTunesArtwork%402x" />

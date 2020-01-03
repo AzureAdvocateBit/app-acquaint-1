@@ -9,10 +9,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:pancakeview="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
     xmlns:viewmodels="clr-namespace:Acquaint.ViewModels"
+    xmlns:models="clr-namespace:Acquaint.Models"
     Title="{Binding Acquaintance.DisplayName}"
     BackgroundColor="{DynamicResource WindowBackgroundColor}"
     NavigationPage.BackButtonTitle="Details"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    x:DataType="viewmodels:DetailViewModel">
     <d:ContentPage.BindingContext>
         <viewmodels:DetailViewModel />
     </d:ContentPage.BindingContext>
@@ -69,14 +71,14 @@
                 Padding="0,12,0,0"
                 BindingContext="{Binding Acquaintance}"
                 Spacing="0">
-                <Label Style="{DynamicResource LargeLabelStyle}" Text="{Binding Company}" />
-                <Label Style="{DynamicResource SmallLabelStyle}" Text="{Binding JobTitle}" />
+                <Label x:DataType="models:Acquaintance" Style="{DynamicResource LargeLabelStyle}" Text="{Binding Company}" />
+                <Label x:DataType="models:Acquaintance" Style="{DynamicResource SmallLabelStyle}" Text="{Binding JobTitle}" />
             </StackLayout>
 
             <Label BindingContext="{Binding Acquaintance}" Style="{DynamicResource MicroLabelStyle}">
                 <Label.FormattedText>
-                    <FormattedString>
-                        <Span Text="{Binding Street}"/>
+                    <FormattedString x:DataType="models:Acquaintance">
+                        <Span  Text="{Binding Street}"/>
                         <Span Text="&#x0a;"/>
                         <Span Text="{Binding City}"/>
                         <Span Text=", "/>
@@ -102,6 +104,7 @@
             Grid.ColumnSpan="2">
             <ImageButton
                 Command="{Binding GetDirectionsCommand}"
+                CommandParameter="{Binding Acquaintance}"
                 Style="{DynamicResource DetailContactImageButtonStyle}"
                 VerticalOptions="Center">
                 <ImageButton.Source>
@@ -114,6 +117,7 @@
             <ImageButton
                 Padding="8"
                 Command="{Binding MessageNumberCommand}"
+                CommandParameter="{Binding Acquaintance.Phone}"
                 Style="{DynamicResource DetailContactImageButtonStyle}"
                 VerticalOptions="Center">
                 <ImageButton.Source>
@@ -126,6 +130,7 @@
             <ImageButton
                 Padding="6"
                 Command="{Binding DialNumberCommand}"
+                CommandParameter="{Binding Acquaintance.Phone}"
                 Style="{DynamicResource DetailContactImageButtonStyle}">
                 <ImageButton.Source>
                     <FontImageSource
@@ -137,6 +142,7 @@
             <ImageButton
                 Padding="6"
                 Command="{Binding EmailCommand}"
+                CommandParameter="{Binding Acquaintance.Email}"
                 Style="{DynamicResource DetailContactImageButtonStyle}">
                 <ImageButton.Source>
                     <FontImageSource

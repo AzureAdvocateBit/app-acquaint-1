@@ -3,6 +3,9 @@ using Xamarin.Forms.Maps;
 using System.Threading.Tasks;
 using System;
 using Acquaint.ViewModels;
+using Xamarin.Essentials;
+using System.Linq;
+using Acquaint.Models;
 
 namespace Acquaint.Views
 {
@@ -15,13 +18,15 @@ namespace Acquaint.Views
             InitializeComponent();
         }
 
+        public DetailPage(Acquaintance acquaintance)
+        {
+            InitializeComponent();
+            BindingContext = new DetailViewModel (acquaintance);
+        }
+
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-
-            // Typically, is preferable to call into the viewmodel for OnAppearing() logic to be performed,
-            // but we're not doing that in this case because we need to interact with the Xamarin.Forms.Map property on this Page.
-            // In the future, the Map type and it's properties may get more binding support, so that the map setup can be omitted from code-behind.
             await SetupMap();
         }
 
@@ -36,35 +41,33 @@ namespace Acquaint.Views
                 AcquaintanceMap.IsVisible = false;
 
                 // set to a default position
-                Position position;
+                Location position;
 
                 try
                 {
-                    position = await ViewModel.GetPosition();
+                    position = (await Geocoding.GetLocationsAsync(ViewModel.Acquaintance.AddressString)).FirstOrDefault();
                 }
                 catch (Exception ex)
                 {
                     ViewModel.DisplayGeocodingError();
-
                     return;
                 }
 
                 // if lat and lon are both 0, then it's assumed that position acquisition failed
-                if (position.Latitude == 0 && position.Longitude == 0)
+                if (position == null || (position.Latitude == 0 && position.Longitude == 0))
                 {
                     ViewModel.DisplayGeocodingError();
-
                     return;
                 }
 
-                // Xamarin.Forms.Maps (2.3.107) currently has a bug that causes map pins to throw ExecutionEngineExceptions on UWP.
-                // Omitting pins on UWP for now.
-                if (Device.OS != TargetPlatform.WinPhone && Device.OS != TargetPlatform.Windows)
+                var xfpos = new Position(position.Latitude, position.Longitude);
+
+                if (DeviceInfo.Platform != DevicePlatform.UWP)
                 {
                     var pin = new Pin()
                     {
                         Type = PinType.Place,
-                        Position = position,
+                        Position = xfpos,
                         Label = ViewModel.Acquaintance.DisplayName,
                         Address = ViewModel.Acquaintance.AddressString
                     };
@@ -74,7 +77,7 @@ namespace Acquaint.Views
                     AcquaintanceMap.Pins.Add(pin);
                 }
 
-            AcquaintanceMap.MoveToRegion(MapSpan.FromCenterAndRadius(position, Distance.FromMiles(10)));
+                AcquaintanceMap.MoveToRegion(MapSpan.FromCenterAndRadius(xfpos, Distance.FromMiles(10)));
 
                 AcquaintanceMap.IsVisible = true;
             }

@@ -18,15 +18,28 @@ namespace Acquaint
 
             SubscribeToDisplayAlertMessages();
 
-            ThemeHelper.ChangeTheme(Settings.ThemeOption, true);
+            var navPage = new NavigationPage(new ListPage())
+            {
+                BarTextColor = Color.White
+            };
 
-            var navPage = new NavigationPage( new ListPage());
-
-            navPage.SetDynamicResource(VisualElement.BackgroundColorProperty, "PrimaryColor");
+            navPage.SetDynamicResource(NavigationPage.BarBackgroundColorProperty, "PrimaryColor");
 
             // set the MainPage of the app to the navPage
             MainPage = navPage;
 
+        }
+
+        protected override void OnStart()
+        {
+            base.OnStart();
+            ThemeHelper.ChangeTheme(Settings.ThemeOption, true);
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            ThemeHelper.ChangeTheme(Settings.ThemeOption, true);
         }
 
         /// <summary>

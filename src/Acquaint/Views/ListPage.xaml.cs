@@ -16,34 +16,28 @@ namespace Acquaint.Views
             BindingContext = new ListViewModel();
 		}
 
-		/// <summary>
-		/// The action to take when a list item is tapped.
-		/// </summary>
-		/// <param name="sender"> The sender.</param>
-		/// <param name="e">The ItemTappedEventArgs</param>
-		void ItemTapped(object sender, ItemTappedEventArgs e)
-		{
-			Navigation.PushAsync(new DetailPage() { BindingContext = new DetailViewModel((Acquaintance)e.Item) });
+        async void ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (!(e.SelectedItem is Acquaintance a))
+                return;
 
-            // prevents the list from displaying the navigated item as selected when navigating back to the list
-			((ListView)sender).SelectedItem = null;
-		}
+            await Navigation.PushAsync(new DetailPage(a));
 
-		/// <summary>
-		/// The action to take when the + ToolbarItem is clicked on Android.
-		/// </summary>
-		/// <param name="sender">The sender.</param>
-		/// <param name="e">The EventArgs</param>
-		void AndroidAddButtonClicked(object sender, EventArgs e)
-		{
-			Navigation.PushAsync(new EditPage() { BindingContext = new EditViewModel() });
-		}
+            ((ListView)sender).SelectedItem = null;
+        }
+        void ItemTapped(object sender, ItemTappedEventArgs e) =>
+            ((ListView)sender).SelectedItem = null;
+
 
 		protected override async void OnAppearing()
 		{
 			base.OnAppearing();
-			await ViewModel.ExecuteLoadCommand();		
+
+            //Update the list if needed. View Model handles this logic.
+            await ViewModel.ExecuteLoadCommand();		
 		}
-	}
+
+       
+    }
 }
 
