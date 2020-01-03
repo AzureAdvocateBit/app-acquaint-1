@@ -14,6 +14,11 @@
     <Color x:Key="LoadingBackgroundColor">#80000000</Color>
     <Color x:Key="LoadingTextColor">White</Color>
 
+
+    <Color x:Key="FabBackgroundColor">#ffffff</Color>
+    <Color x:Key="SearchBackgroundColor">#ffffff</Color>
+    <Color x:Key="SearchTextColor">#5f6368</Color>
+
     <Color x:Key="SystemBlue">#007AFF</Color>
     <Color x:Key="SystemGreen">#34C759</Color>
     <Color x:Key="SystemIndigo">#5856D6</Color>
