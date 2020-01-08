@@ -4,50 +4,51 @@ using MyContacts.Models;
 using MyContacts.Extensions;
 using MyContacts.Services;
 using MyContacts.Constants;
+using MyContacts.Shared.Models;
 
 namespace MyContacts.ViewModels
 {
     public class EditViewModel : ViewModelBase
 	{
-		bool isNewMyContactsance;
+		bool isNewMyContacts;
 
         public EditViewModel()
         {
-            MyContactsance = new Contact();
-            isNewMyContactsance = true;
-            Title = "New MyContactsance";
+            Contact = new Contact();
+            isNewMyContacts = true;
+            Title = "New MyContacts";
         }
-		public EditViewModel(Contact MyContactsance)
+		public EditViewModel(Contact contact)
 		{
-			if (MyContactsance == null)
+			if (contact == null)
 			{
-				MyContactsance = new Contact();
-				isNewMyContactsance = true;
-                Title = "New MyContactsance";
+                Contact = new Contact();
+				isNewMyContacts = true;
+                Title = "New MyContacts";
             }
 			else
 			{
-                MyContactsance = MyContactsance.Clone();
-                Title = "Edit MyContactsance";
+                Contact = contact.Clone();
+                Title = "Edit MyContacts";
             }
 
 
 		}
 
-		public Contact MyContactsance { private set; get; }
+		public Contact Contact { private set; get; }
 
-		Command saveMyContactsanceCommand;
+		Command saveCommand;
 
-		public Command SaveMyContactsanceCommand => saveMyContactsanceCommand ?? (saveMyContactsanceCommand = new Command(async () => await ExecuteSaveMyContactsanceCommand()));
+		public Command SaveCommand => saveCommand ?? (saveCommand = new Command(async () => await ExecuteSaveCommand()));
 
-		async Task ExecuteSaveMyContactsanceCommand()
+		async Task ExecuteSaveCommand()
 		{
-			if (string.IsNullOrWhiteSpace(MyContactsance.LastName) || string.IsNullOrWhiteSpace(MyContactsance.FirstName))
+			if (string.IsNullOrWhiteSpace(Contact.LastName) || string.IsNullOrWhiteSpace(Contact.FirstName))
 			{
 				MessagingService.Current.SendMessage<MessagingServiceAlert>(MessageKeys.DisplayAlert, new MessagingServiceAlert()
 					{
 						Title = "Invalid name!", 
-						Message = "An MyContactsance must have both a first and last name.",
+						Message = "An MyContacts must have both a first and last name.",
 						Cancel = "OK"
 					});
 				return;
@@ -64,13 +65,13 @@ namespace MyContacts.ViewModels
 				return;
 			}
 
-			if (isNewMyContactsance)
+			if (isNewMyContacts)
 			{
-				MessagingService.Current.SendMessage<Contact>(MessageKeys.AddMyContactsance, MyContactsance);
+				MessagingService.Current.SendMessage<Contact>(MessageKeys.AddContact, Contact);
 			}
 			else 
 			{
-				MessagingService.Current.SendMessage<Contact>(MessageKeys.UpdateMyContactsance, MyContactsance);
+				MessagingService.Current.SendMessage<Contact>(MessageKeys.UpdateContact, Contact);
 			}
 			await PopAsync();
 		}
@@ -79,17 +80,17 @@ namespace MyContacts.ViewModels
 		{
 			get
 			{
-				if (!MyContactsance.Street.IsNullOrWhiteSpace() && !MyContactsance.City.IsNullOrWhiteSpace() && !MyContactsance.State.IsNullOrWhiteSpace())
+				if (!Contact.Street.IsNullOrWhiteSpace() && !Contact.City.IsNullOrWhiteSpace() && !Contact.State.IsNullOrWhiteSpace())
 				{
 					return true;
 				}
 
-				if (!MyContactsance.PostalCode.IsNullOrWhiteSpace() && (MyContactsance.Street.IsNullOrWhiteSpace() || MyContactsance.City.IsNullOrWhiteSpace() || MyContactsance.State.IsNullOrWhiteSpace()))
+				if (!Contact.PostalCode.IsNullOrWhiteSpace() && (Contact.Street.IsNullOrWhiteSpace() || Contact.City.IsNullOrWhiteSpace() || Contact.State.IsNullOrWhiteSpace()))
 				{
 					return true;
 				}
 
-				if (MyContactsance.AddressString.IsNullOrWhiteSpace())
+				if (Contact.AddressString.IsNullOrWhiteSpace())
 				{
 					return true;
 				}

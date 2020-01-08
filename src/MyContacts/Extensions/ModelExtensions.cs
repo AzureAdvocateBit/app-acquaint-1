@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MyContacts.Models;
+﻿using MyContacts.Shared.Models;
 
 namespace MyContacts.Extensions
 {

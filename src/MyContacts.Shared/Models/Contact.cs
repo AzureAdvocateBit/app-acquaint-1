@@ -8,6 +8,7 @@ namespace MyContacts.Shared.Models
     {  
 		public string DataPartitionId { get; set; }
         string id;
+        [JsonPropertyName("id")]
         public string Id 
         { 
             get => id;
@@ -15,6 +16,7 @@ namespace MyContacts.Shared.Models
         }
 
         string firstName;
+        [JsonPropertyName("firstName")]
         public string FirstName
         {
             get => firstName;
@@ -29,6 +31,7 @@ namespace MyContacts.Shared.Models
         }
 
         string lastName;
+        [JsonPropertyName("lastName")]
         public string LastName
         {
             get => lastName;
@@ -43,6 +46,7 @@ namespace MyContacts.Shared.Models
         }
 
         string company;
+        [JsonPropertyName("company")]
         public string Company
         {
             get => company;
@@ -50,6 +54,7 @@ namespace MyContacts.Shared.Models
         }
 
         string jobTitle;
+        [JsonPropertyName("jobTitle")]
         public string JobTitle
         {
             get => jobTitle;
@@ -57,6 +62,7 @@ namespace MyContacts.Shared.Models
         }
 
         string email;
+        [JsonPropertyName("email")]
         public string Email
         {
             get => email;
@@ -64,6 +70,7 @@ namespace MyContacts.Shared.Models
         }
 
         string phone;
+        [JsonPropertyName("phone")]
         public string Phone
         {
             get => phone;
@@ -71,6 +78,7 @@ namespace MyContacts.Shared.Models
         }
 
         string street;
+        [JsonPropertyName("street")]
         public string Street
         {
             get => street;
@@ -83,6 +91,7 @@ namespace MyContacts.Shared.Models
         }
 
         string city;
+        [JsonPropertyName("city")]
         public string City
         {
             get => city;
@@ -95,6 +104,7 @@ namespace MyContacts.Shared.Models
         }
 
         string postalCode;
+        [JsonPropertyName("postalCode")]
         public string PostalCode
         {
             get => postalCode;
@@ -110,6 +120,7 @@ namespace MyContacts.Shared.Models
 
 
         string state;
+        [JsonPropertyName("state")]
         public string State
         {
             get => state;
@@ -124,6 +135,7 @@ namespace MyContacts.Shared.Models
         }
 
         string photoUrl;
+        [JsonPropertyName("photoUrl")]
         public string PhotoUrl
         {
             get => photoUrl;

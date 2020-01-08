@@ -7,10 +7,10 @@
     {
         public const string DisplayAlert = "DisplayAlert";
         public const string DisplayQuestion = "DisplayQuestion";
-		public const string AddMyContactsance = "AddMyContactsance";
-        public const string UpdateMyContactsance = "UpdateMyContactsance";
-        public const string DeleteMyContactsance = "DeleteMyContactsance";
-        public const string MyContactsanceLocationUpdated = "MyContactsanceLocationUpdated";
+		public const string AddContact = "AddMyContacts";
+        public const string UpdateContact = "UpdateMyContacts";
+        public const string DeleteContact = "DeleteMyContacts";
+        public const string ContactLocationUpdated = "MyContactsLocationUpdated";
         public const string SetupMap = "SetupMap";
 		public const string DataPartitionPhraseValidation = "DataPartitionPhraseValidation";
 		public const string BackendUrlValidation = "BackendUrlValidation";

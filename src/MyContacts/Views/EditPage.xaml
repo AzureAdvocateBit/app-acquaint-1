@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewmodels="clr-namespace:MyContacts.ViewModels"
     xmlns:models="clr-namespace:MyContacts.Models"
+    xmlns:sharedmodels="clr-namespace:MyContacts.Shared.Models;assembly=MyContacts.Shared"
     Title="{Binding Title}"
     x:DataType="viewmodels:EditViewModel"
     BackgroundColor="{DynamicResource WindowBackgroundColor}"
@@ -15,7 +16,7 @@
         <viewmodels:EditViewModel />
     </d:ContentPage.BindingContext>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding SaveMyContactsanceCommand}" Text="Save">
+        <ToolbarItem Command="{Binding SaveCommand}" Text="Save">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="{DynamicResource MaterialFontFamily}" Glyph="{StaticResource IconSave}" />
             </ToolbarItem.IconImageSource>
@@ -24,8 +25,8 @@
 
     <ScrollView>
         <StackLayout Padding="12" 
-                     BindingContext="{Binding MyContactsance}">
-            <Grid x:DataType="models:MyContactsance">
+                     BindingContext="{Binding Contact}">
+            <Grid x:DataType="sharedmodels:Contact">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -71,7 +72,7 @@
                     Style="{DynamicResource EntryStyle}"
                     Text="{Binding LastName}" />
             </Grid>
-            <Grid x:DataType="models:MyContactsance">
+            <Grid x:DataType="sharedmodels:Contact">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -117,7 +118,7 @@
                     Style="{DynamicResource EntryStyle}"
                     Text="{Binding JobTitle}" />
             </Grid>
-            <Grid x:DataType="models:MyContactsance">
+            <Grid x:DataType="sharedmodels:Contact">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -177,7 +178,7 @@
                     Style="{DynamicResource EntryStyle}"
                     Text="{Binding Email}" />
             </Grid>
-            <Grid x:DataType="models:MyContactsance">
+            <Grid x:DataType="sharedmodels:Contact">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />

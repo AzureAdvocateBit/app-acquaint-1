@@ -21,8 +21,6 @@ namespace MyContactsAndroid
 
 			base.OnCreate (savedInstanceState);
 
-            Plugin.CurrentActivity.CrossCurrentActivity.Current.Init(this, savedInstanceState);
-
 			Forms.Init (this, savedInstanceState);
 			FormsMaps.Init (this, savedInstanceState);
             FormsMaterial.Init(this, savedInstanceState);

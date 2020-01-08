@@ -6,47 +6,48 @@ using MyContacts.Services;
 using MyContacts.Views;
 using MvvmHelpers.Commands;
 using Command = Xamarin.Forms.Command;
+using MyContacts.Shared.Models;
 
 namespace MyContacts.ViewModels
 {
-    public class DetailViewModel : AcquainanceViewModel
+    public class DetailViewModel : ContactViewModel
     {
         public DetailViewModel()
         {
 
         }
-        public DetailViewModel(Contact MyContactsance)
+        public DetailViewModel(Contact contact)
         {
-            MyContactsance = MyContactsance;
+            Contact = contact;
 
-            SubscribeToSaveMyContactsanceMessages();
+            SubscribeToSaveContactsMessages();
         }
 
-        public Contact MyContactsance { private set; get; }
+        public Contact Contact { get; private set; }
 
-        public bool HasEmailAddress => !string.IsNullOrWhiteSpace(MyContactsance?.Email);
+        public bool HasEmailAddress => !string.IsNullOrWhiteSpace(Contact?.Email);
 
-        public bool HasPhoneNumber => !string.IsNullOrWhiteSpace(MyContactsance?.Phone);
+        public bool HasPhoneNumber => !string.IsNullOrWhiteSpace(Contact?.Phone);
 
-        public bool HasAddress => !string.IsNullOrWhiteSpace(MyContactsance?.AddressString);
+        public bool HasAddress => !string.IsNullOrWhiteSpace(Contact?.AddressString);
 
 
-        AsyncCommand editMyContactsanceCommand;
+        AsyncCommand editCommand;
 
-        public AsyncCommand EditMyContactsanceCommand =>
-            editMyContactsanceCommand ??= new AsyncCommand(ExecuteEditMyContactsanceCommand);
+        public AsyncCommand EditCommand =>
+            editCommand ??= new AsyncCommand(ExecuteEditCommand);
 
-        Task ExecuteEditMyContactsanceCommand() => PushAsync(new EditPage(MyContactsance));
+        Task ExecuteEditCommand() => PushAsync(new EditPage(Contact));
 
-        Command deleteMyContactsanceCommand;
+        Command deleteCommand;
 
-        public Command DeleteMyContactsanceCommand => deleteMyContactsanceCommand ?? (deleteMyContactsanceCommand = new Command(ExecuteDeleteMyContactsanceCommand));
+        public Command DeleteCommand => deleteCommand ?? (deleteCommand = new Command(ExecuteDeleteCommand));
 
-        void ExecuteDeleteMyContactsanceCommand()
+        void ExecuteDeleteCommand()
         {
             MessagingService.Current.SendMessage<MessagingServiceQuestion>(MessageKeys.DisplayQuestion, new MessagingServiceQuestion()
             {
-                Title = string.Format("Delete {0}?", MyContactsance.DisplayName),
+                Title = string.Format("Delete {0}?", Contact.DisplayName),
                 Question = null,
                 Positive = "Delete",
                 Negative = "Cancel",
@@ -54,8 +55,8 @@ namespace MyContacts.ViewModels
                 {
                     if (!result) return;
 
-                    // send a message that we want the given MyContactsance to be deleted
-                    MessagingService.Current.SendMessage<Contact>(MessageKeys.DeleteMyContactsance, MyContactsance);
+                    // send a message that we want the given MyContacts to be deleted
+                    MessagingService.Current.SendMessage<Contact>(MessageKeys.DeleteContact, Contact);
 
                     await PopAsync();
                 })
@@ -69,15 +70,15 @@ namespace MyContacts.ViewModels
                 MessagingService.Current.SendMessage(MessageKeys.SetupMap);
             }
         }
-        void SubscribeToSaveMyContactsanceMessages()
+        void SubscribeToSaveContactsMessages()
         {
-            // This subscribes to the "SaveMyContactsance" message
-            MessagingService.Current.Subscribe<Contact>(MessageKeys.UpdateMyContactsance, (service, MyContactsance) =>
+            // This subscribes to the "SaveMyContacts" message
+            MessagingService.Current.Subscribe<Contact>(MessageKeys.UpdateContact, (service, contact) =>
                 {
-                    MyContactsance = MyContactsance;
-                    OnPropertyChanged("MyContactsance");
+                    Contact = contact;
+                    OnPropertyChanged("MyContacts");
 
-                    MessagingService.Current.SendMessage<Contact>(MessageKeys.MyContactsanceLocationUpdated, MyContactsance);
+                    MessagingService.Current.SendMessage<Contact>(MessageKeys.ContactLocationUpdated, Contact);
                 });
         }
 

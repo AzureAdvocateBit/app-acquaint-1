@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
-using MyContacts.Interfaces;
-using MyContacts.Models;
 using MyContacts.Util;
 using MyContacts.Views;
 using MvvmHelpers;
 using MvvmHelpers.Commands;
-using Xamarin.Forms;
-using Command = Xamarin.Forms.Command;
+using MyContacts.Shared.Models;
 
 namespace MyContacts.ViewModels
 {
-    public class ListViewModel : AcquainanceViewModel
+    public class ListViewModel : ContactViewModel
     {
         public DateTime LastUpdate { get; set; }
         public ListViewModel()
@@ -20,7 +16,7 @@ namespace MyContacts.ViewModels
         }
 
 
-        public ObservableRangeCollection<Contact> MyContacts { get; } = new ObservableRangeCollection<Contact>();
+        public ObservableRangeCollection<Contact> Contacts { get; } = new ObservableRangeCollection<Contact>();
 
         AsyncCommand loadCommand;
         public AsyncCommand LoadCommand => loadCommand ??=
@@ -28,8 +24,8 @@ namespace MyContacts.ViewModels
 
         public async Task ExecuteLoadCommand()
         { 
-            if (MyContacts.Count < 1 || LastUpdate < Settings.LastUpdate)
-                await FetchMyContacts();
+            if (Contacts.Count < 1 || LastUpdate < Settings.LastUpdate)
+                await FetchContacts();
         }
 
         AsyncCommand refreshCommand;
@@ -38,10 +34,10 @@ namespace MyContacts.ViewModels
 
         async Task ExecuteRefreshCommand()
         {
-            await FetchMyContacts();
+            await FetchContacts();
         }
 
-        async Task FetchMyContacts()
+        async Task FetchContacts()
         {
             if (IsBusy)
                 return;
@@ -51,7 +47,7 @@ namespace MyContacts.ViewModels
             await Task.Delay(1000);
             var items = await DataSource.GetItems();
 
-            MyContacts.ReplaceRange(items);
+            Contacts.ReplaceRange(items);
 
             LastUpdate = DateTime.UtcNow;
 

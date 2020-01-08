@@ -6,6 +6,7 @@ using MyContacts.ViewModels;
 using Xamarin.Essentials;
 using System.Linq;
 using MyContacts.Models;
+using MyContacts.Shared.Models;
 
 namespace MyContacts.Views
 {
@@ -18,10 +19,10 @@ namespace MyContacts.Views
             InitializeComponent();
         }
 
-        public DetailPage(Contact MyContactsance)
+        public DetailPage(Contact MyContacts)
         {
             InitializeComponent();
-            BindingContext = new DetailViewModel (MyContactsance);
+            BindingContext = new DetailViewModel (MyContacts);
         }
 
         protected override async void OnAppearing()
@@ -38,14 +39,14 @@ namespace MyContacts.Views
         {
             if (ViewModel.HasAddress)
             {
-                MyContactsanceMap.IsVisible = false;
+                MyContactsMap.IsVisible = false;
 
                 // set to a default position
                 Location position;
 
                 try
                 {
-                    position = (await Geocoding.GetLocationsAsync(ViewModel.MyContactsance.AddressString)).FirstOrDefault();
+                    position = (await Geocoding.GetLocationsAsync(ViewModel.Contact.AddressString)).FirstOrDefault();
                 }
                 catch (Exception ex)
                 {
@@ -68,18 +69,18 @@ namespace MyContacts.Views
                     {
                         Type = PinType.Place,
                         Position = xfpos,
-                        Label = ViewModel.MyContactsance.DisplayName,
-                        Address = ViewModel.MyContactsance.AddressString
+                        Label = ViewModel.Contact.DisplayName,
+                        Address = ViewModel.Contact.AddressString
                     };
 
-                    MyContactsanceMap.Pins.Clear();
+                    MyContactsMap.Pins.Clear();
 
-                    MyContactsanceMap.Pins.Add(pin);
+                    MyContactsMap.Pins.Add(pin);
                 }
 
-                MyContactsanceMap.MoveToRegion(MapSpan.FromCenterAndRadius(xfpos, Distance.FromMiles(10)));
+                MyContactsMap.MoveToRegion(MapSpan.FromCenterAndRadius(xfpos, Distance.FromMiles(10)));
 
-                MyContactsanceMap.IsVisible = true;
+                MyContactsMap.IsVisible = true;
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using MyContacts.Models;
+using MyContacts.Shared.Models;
 using MyContacts.ViewModels;
 using Xamarin.Forms;
 
@@ -19,14 +20,14 @@ namespace MyContacts.Views
             BindingContext = new EditViewModel();
         }
 
-        public EditPage(Contact MyContactsance) 
+        public EditPage(Contact contact) 
         {
             InitializeComponent();
 
             if (Device.OS == TargetPlatform.iOS)
                 Title = null; // because iOS already displays the previous page's title with the back button, we don't want to display it twice.
 
-            BindingContext = new EditViewModel(MyContactsance);
+            BindingContext = new EditViewModel(contact);
         }
 
         /// <summary>

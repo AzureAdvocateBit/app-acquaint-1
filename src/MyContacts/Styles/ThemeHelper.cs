@@ -18,33 +18,25 @@ namespace MyContacts.Styles
 
             //// clear all the resources
             var applicationResourceDictionary = Application.Current.Resources;
-            ResourceDictionary newTheme;
-            var environment = DependencyService.Get<IEnvironment>();
-            if (theme == Theme.Default)            {
-                
-                theme = environment?.GetOSTheme() ?? Theme.Light;
-            }
 
-            switch (theme)
+            if (theme == Theme.Default)
+              theme = AppInfo.RequestedTheme == AppTheme.Dark ? Theme.Dark : Theme.Light;
+
+#pragma warning disable IDE0007 // Use implicit type
+            ResourceDictionary newTheme = theme switch
+#pragma warning restore IDE0007 // Use implicit type
             {
-                case Theme.Light:
-                    newTheme = new LightTheme();
-                    break;
-                case Theme.Dark:
-                    newTheme = new DarkTheme();
-                    break;
-                case Theme.Default:
-                default:
-                    newTheme = new LightTheme();
-                    break;
-            }
-
+                Theme.Light => new LightTheme(),
+                Theme.Dark => new DarkTheme(),
+                _ => new LightTheme(),
+            };
             ManuallyCopyThemes(newTheme, applicationResourceDictionary);
 
             CurrentTheme = theme;
 
             
             var background = (Color)App.Current.Resources["PrimaryDarkColor"];
+            var environment = DependencyService.Get<IEnvironment>();
             environment?.SetStatusBarColor(ColorConverters.FromHex(background.ToHex()), false);
         }
 

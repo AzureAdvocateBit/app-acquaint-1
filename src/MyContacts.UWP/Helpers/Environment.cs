@@ -14,19 +14,6 @@ namespace MyContacts.UWP.Helpers
 {
     public class Environment : IEnvironment
     {
-        public Theme GetOSTheme()
-        {   
-            switch(Application.Current.RequestedTheme)
-            {
-                case ApplicationTheme.Dark:
-                    return Theme.Dark;
-                case ApplicationTheme.Light:
-                    return Theme.Light;
-            }
-
-            return Theme.Light;
-        }
-
         public void SetStatusBarColor(System.Drawing.Color color, bool darkStatusBarTint)
         {
         }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using MyContacts.Interfaces;
 using MyContacts.Models;
+using MyContacts.Shared.Models;
 
 namespace MyContacts.ViewModels
 {

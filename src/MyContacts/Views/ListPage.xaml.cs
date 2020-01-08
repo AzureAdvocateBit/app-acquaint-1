@@ -3,6 +3,7 @@ using Xamarin.Forms;
 using MyContacts.Util;
 using MyContacts.Models;
 using MyContacts.ViewModels;
+using MyContacts.Shared.Models;
 
 namespace MyContacts.Views
 {

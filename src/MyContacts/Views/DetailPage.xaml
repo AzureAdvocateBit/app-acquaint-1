@@ -10,7 +10,8 @@
     xmlns:pancakeview="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
     xmlns:viewmodels="clr-namespace:MyContacts.ViewModels"
     xmlns:models="clr-namespace:MyContacts.Models"
-    Title="{Binding MyContactsance.DisplayName}"
+    xmlns:sharedmodels="clr-namespace:MyContacts.Shared.Models;assembly=MyContacts.Shared"
+    Title="{Binding Contact.DisplayName}"
     BackgroundColor="{DynamicResource WindowBackgroundColor}"
     NavigationPage.BackButtonTitle="Details"
     mc:Ignorable="d"
@@ -25,7 +26,7 @@
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem
-            Command="{Binding DeleteMyContactsanceCommand}"
+            Command="{Binding DeleteCommand}"
             Text="Delete">
             <ToolbarItem.IconImageSource>
                 <FontImageSource
@@ -34,7 +35,7 @@
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
         <ToolbarItem
-            Command="{Binding EditMyContactsanceCommand}"
+            Command="{Binding EditCommand}"
             Text="Edit">
             <ToolbarItem.IconImageSource>
                 <FontImageSource
@@ -63,21 +64,21 @@
             Style="{DynamicResource PancakeStyle}"
             VerticalOptions="Center"
             WidthRequest="100">
-            <Image Aspect="AspectFill" Source="{Binding MyContactsance.PhotoUrl}" />
+            <Image Aspect="AspectFill" Source="{Binding Contact.PhotoUrl}" />
         </pancakeview:PancakeView>
 
         <StackLayout Grid.Column="1" >
             <StackLayout
                 Padding="0,12,0,0"
-                BindingContext="{Binding MyContactsance}"
+                BindingContext="{Binding Contact}"
                 Spacing="0">
-                <Label x:DataType="models:MyContactsance" Style="{DynamicResource LargeLabelStyle}" Text="{Binding Company}" />
-                <Label x:DataType="models:MyContactsance" Style="{DynamicResource SmallLabelStyle}" Text="{Binding JobTitle}" />
+                <Label x:DataType="sharedmodels:Contact" Style="{DynamicResource LargeLabelStyle}" Text="{Binding Company}" />
+                <Label x:DataType="sharedmodels:Contact" Style="{DynamicResource SmallLabelStyle}" Text="{Binding JobTitle}" />
             </StackLayout>
 
-            <Label BindingContext="{Binding MyContactsance}" Style="{DynamicResource MicroLabelStyle}">
+            <Label BindingContext="{Binding Contact}" Style="{DynamicResource MicroLabelStyle}">
                 <Label.FormattedText>
-                    <FormattedString x:DataType="models:MyContactsance">
+                    <FormattedString x:DataType="sharedmodels:Contact">
                         <Span  Text="{Binding Street}"/>
                         <Span Text="&#x0a;"/>
                         <Span Text="{Binding City}"/>
@@ -104,7 +105,7 @@
             Grid.ColumnSpan="2">
             <ImageButton
                 Command="{Binding GetDirectionsCommand}"
-                CommandParameter="{Binding MyContactsance}"
+                CommandParameter="{Binding Contact}"
                 Style="{DynamicResource DetailContactImageButtonStyle}"
                 VerticalOptions="Center">
                 <ImageButton.Source>
@@ -117,7 +118,7 @@
             <ImageButton
                 Padding="8"
                 Command="{Binding MessageNumberCommand}"
-                CommandParameter="{Binding MyContactsance.Phone}"
+                CommandParameter="{Binding Contact.Phone}"
                 Style="{DynamicResource DetailContactImageButtonStyle}"
                 VerticalOptions="Center">
                 <ImageButton.Source>
@@ -130,7 +131,7 @@
             <ImageButton
                 Padding="6"
                 Command="{Binding DialNumberCommand}"
-                CommandParameter="{Binding MyContactsance.Phone}"
+                CommandParameter="{Binding Contact.Phone}"
                 Style="{DynamicResource DetailContactImageButtonStyle}">
                 <ImageButton.Source>
                     <FontImageSource
@@ -142,7 +143,7 @@
             <ImageButton
                 Padding="6"
                 Command="{Binding EmailCommand}"
-                CommandParameter="{Binding MyContactsance.Email}"
+                CommandParameter="{Binding Contact.Email}"
                 Style="{DynamicResource DetailContactImageButtonStyle}">
                 <ImageButton.Source>
                     <FontImageSource
@@ -181,7 +182,7 @@
                     IsRunning="{Binding IsBusy}"
                     IsVisible="{Binding IsBusy}" />
                 <maps:Map
-                    x:Name="MyContactsanceMap"
+                    x:Name="MyContactsMap"
                     AbsoluteLayout.LayoutBounds="0, 0, 1.0, 1.0"
                     AbsoluteLayout.LayoutFlags="All"
                     IsVisible="false" />

@@ -7,10 +7,11 @@ using MyContacts.Models;
 using MyContacts.Services;
 using MvvmHelpers.Commands;
 using Xamarin.Essentials;
+using MyContacts.Shared.Models;
 
 namespace MyContacts.ViewModels
 {
-    public class AcquainanceViewModel : ViewModelBase
+    public class ContactViewModel : ViewModelBase
     {
 
         Command<string> dialNumberCommand;
@@ -69,9 +70,9 @@ namespace MyContacts.ViewModels
         AsyncCommand<string> emailCommand;
 
         public AsyncCommand<string> EmailCommand =>
-            emailCommand ??= new AsyncCommand<string>(ExecuteEmailCommandCommand);
+            emailCommand ??= new AsyncCommand<string>(ExecuteEmailCommand);
 
-        async Task ExecuteEmailCommandCommand(string email)
+        async Task ExecuteEmailCommand(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
                 return;
@@ -98,16 +99,16 @@ namespace MyContacts.ViewModels
             getDirectionsCommand ??= new AsyncCommand<Contact>(ExecuteGetDirectionsCommand);
 
 
-        async Task ExecuteGetDirectionsCommand(Contact MyContactsance)
+        async Task ExecuteGetDirectionsCommand(Contact MyContacts)
         {
             try
             {
-                await Xamarin.Essentials.Map.OpenAsync(new Placemark
+                await Map.OpenAsync(new Placemark
                 {
-                    AdminArea = MyContactsance.State,
-                    Locality = MyContactsance.City,
-                    PostalCode = MyContactsance.PostalCode,
-                    Thoroughfare = MyContactsance.AddressString
+                    AdminArea = MyContacts.State,
+                    Locality = MyContacts.City,
+                    PostalCode = MyContacts.PostalCode,
+                    Thoroughfare = MyContacts.AddressString
                 });
             }
             catch (Exception ex)

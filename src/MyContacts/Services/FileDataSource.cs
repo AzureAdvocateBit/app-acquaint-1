@@ -13,7 +13,6 @@ using MyContacts.Util;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
-[assembly:Dependency(typeof(FileDataSource))]
 namespace MyContacts.Services
 {
     /// <summary>
