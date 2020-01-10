@@ -1,0 +1,6 @@
+MainPackage=Z:\Projects\app-MyContacts\MyContacts\MyContacts.UWP\bin\ARM\Release\MyContacts.UWP_1.1.0.0_ARM.appx
+SymbolPackage=Z:\Projects\app-MyContacts\MyContacts\MyContacts.UWP\AppPackages\MyContacts.UWP_1.1.0.0_Test\MyContacts.UWP_1.1.0.0_ARM.appxsym
+ResourcePack=Z:\Projects\app-MyContacts\MyContacts\MyContacts.UWP\bin\ARM\Release\MyContacts.UWP_1.1.0.0_scale-100.appx
+ResourcePack=Z:\Projects\app-MyContacts\MyContacts\MyContacts.UWP\bin\ARM\Release\MyContacts.UWP_1.1.0.0_scale-125.appx
+ResourcePack=Z:\Projects\app-MyContacts\MyContacts\MyContacts.UWP\bin\ARM\Release\MyContacts.UWP_1.1.0.0_scale-150.appx
+ResourcePack=Z:\Projects\app-MyContacts\MyContacts\MyContacts.UWP\bin\ARM\Release\MyContacts.UWP_1.1.0.0_scale-400.appx

@@ -1,6 +1,0 @@
-MainPackage=Z:\Projects\app-acquaint\Acquaint\Acquaint.UWP\bin\ARM\Release\Upload\Acquaint.UWP_1.1.0.0_ARM.appx
-SymbolPackage=Z:\Projects\app-acquaint\Acquaint\Acquaint.UWP\AppPackages\Acquaint.UWP_1.1.0.0\Acquaint.UWP_1.1.0.0_ARM.appxsym
-ResourcePack=Z:\Projects\app-acquaint\Acquaint\Acquaint.UWP\_scale-100.appx
-ResourcePack=Z:\Projects\app-acquaint\Acquaint\Acquaint.UWP\_scale-125.appx
-ResourcePack=Z:\Projects\app-acquaint\Acquaint\Acquaint.UWP\_scale-150.appx
-ResourcePack=Z:\Projects\app-acquaint\Acquaint\Acquaint.UWP\_scale-400.appx
