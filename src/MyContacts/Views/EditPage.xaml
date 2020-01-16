@@ -9,6 +9,7 @@
     xmlns:models="clr-namespace:MyContacts.Models"
     xmlns:sharedmodels="clr-namespace:MyContacts.Shared.Models;assembly=MyContacts.Shared"
     Title="{Binding Title}"
+    NavigationPage.BackButtonTitle="Back"
     x:DataType="viewmodels:EditViewModel"
     BackgroundColor="{DynamicResource WindowBackgroundColor}"
     mc:Ignorable="d">

@@ -64,12 +64,12 @@ namespace MyContacts.ViewModels
 
         public async Task DisplayGeocodingError()
         {
-            await Dialogs.Alert(new AlertInfo
+            /*await Dialogs.Alert(new AlertInfo
             {
                 Title = "Geocoding Error",
                 Message = "Please make sure the address is valid, or that you have a network connection.",
                 Cancel = "OK"
-            });
+            });*/
 
             IsBusy = false;
         }

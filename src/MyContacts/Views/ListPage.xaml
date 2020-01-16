@@ -119,6 +119,7 @@
             HeightRequest="56"
             HorizontalOptions="End"
             Style="{DynamicResource FrameStyle}"
+            BackgroundColor="{DynamicResource PrimaryColor}"
             VerticalOptions="End"
             WidthRequest="56">
             <ImageButton
@@ -126,12 +127,13 @@
                 Command="{Binding NewCommand}"
                 HorizontalOptions="FillAndExpand"
                 Style="{DynamicResource FloatingActionButtonStyle}"
+                BackgroundColor="{DynamicResource PrimaryColor}"
                 VerticalOptions="FillAndExpand">
                 <ImageButton.Source>
                     <FontImageSource
                         FontFamily="{DynamicResource MaterialFontFamily}"
                         Glyph="{StaticResource IconAdd}"
-                        Color="{DynamicResource PrimaryColor}" />
+                        Color="White" />
                 </ImageButton.Source>
             </ImageButton>
         </Frame>

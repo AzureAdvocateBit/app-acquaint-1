@@ -13,7 +13,7 @@
     xmlns:sharedmodels="clr-namespace:MyContacts.Shared.Models;assembly=MyContacts.Shared"
     Title="{Binding Contact.DisplayName}"
     BackgroundColor="{DynamicResource WindowBackgroundColor}"
-    NavigationPage.BackButtonTitle="Details"
+    NavigationPage.BackButtonTitle="Back"
     mc:Ignorable="d"
     x:DataType="viewmodels:DetailViewModel">
     <d:ContentPage.BindingContext>

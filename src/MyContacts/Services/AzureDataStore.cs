@@ -1,12 +1,17 @@
-﻿using System;
+﻿#define LOCALWRITES
+
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using MyContacts.Extensions;
 using MyContacts.Interfaces;
 using MyContacts.Shared.Models;
 using MyContacts.Util;
+using MyContacts.Utils;
 using Xamarin.Essentials;
 
 namespace MyContacts.Services
@@ -14,7 +19,7 @@ namespace MyContacts.Services
     public class AzureDataStore : IDataSource<Contact>
     {
         HttpClient client;
-        IEnumerable<Contact> contacts;
+        List<Contact> contacts;
 
         public static string BackendUrl = "https://mycontactsapi20200107080452.azurewebsites.net";
 
@@ -33,63 +38,124 @@ namespace MyContacts.Services
         bool IsConnected => Connectivity.NetworkAccess == NetworkAccess.Internet;
         public async Task<IEnumerable<Contact>> GetItems()
         {
+
+            Settings.LastUpdate = DateTime.UtcNow;
+
+#if LOCALWRITES
+            if (contacts.Any())
+                return contacts;
+#endif
             if (IsConnected)
             {
                 var json = await client.GetStringAsync($"api/Contacts");
-                contacts = await Task.Run(() => JsonSerializer.Deserialize<IEnumerable<Contact>>(json));
+                contacts = await Task.Run(() => JsonSerializer.Deserialize<List<Contact>>(json));
+            }
+            else
+            {
+                await OfflineAlert();
             }
 
-
-            Settings.LastUpdate = DateTime.UtcNow;
 
             return contacts;
         }
 
         public async Task<Contact> GetItem(string id)
         {
-            if (id != null && IsConnected)
+
+            Settings.LastUpdate = DateTime.UtcNow;
+
+#if LOCALWRITES
+            var c = contacts.FirstOrDefault(c => c.Id == id);
+            if (c != null)
+                return c;
+#endif
+
+            if (!IsConnected)
+            {
+                await OfflineAlert();
+                return null;
+            }
+
+            if (id != null)
             {
                 var json = await client.GetStringAsync($"api/Contacts/{id}");
                 return await Task.Run(() => JsonSerializer.Deserialize<Contact>(json));
             }
 
 
-            Settings.LastUpdate = DateTime.UtcNow;
-
             return null;
         }
 
-        public async Task<bool> AddItem(Contact Contact)
+        public async Task<bool> AddItem(Contact contact)
         {
-            if (Contact == null || !IsConnected)
+            if (contact == null)
                 return false;
 
-            var serializedContact = JsonSerializer.Serialize(Contact);
-
-            var response = await client.PostAsync($"api/Contacts", new StringContent(serializedContact, Encoding.UTF8, "application/json"));
-
-
             Settings.LastUpdate = DateTime.UtcNow;
+
+            var serializedContact = JsonSerializer.Serialize(contact);
+
+#if LOCALWRITES
+            contact.Id = Guid.NewGuid().ToString();
+            contacts.Add(contact);
+
+            await Dialogs.Alert(new AlertInfo
+            {
+                Cancel = "OK",
+                Title = "Local Only Mode",
+                Message = "Currently running in local write mode. Data will not be sent to the server."
+            });
+
+            return true;
+#endif
+
+            if (!IsConnected)
+            {
+                await OfflineAlert();
+                return false;
+            }
+
+            var response = await client.PostAsync($"api/Contacts", new StringContent(serializedContact, Encoding.UTF8, "application/json"));            
 
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> UpdateItem(Contact Contact)
+        public async Task<bool> UpdateItem(Contact contact)
         {
-            if (Contact == null || Contact.Id == null || !IsConnected)
+            if (contact == null || contact.Id == null)
                 return false;
 
-            var serializedContact = JsonSerializer.Serialize(Contact);
+            Settings.LastUpdate = DateTime.UtcNow;
+
+#if LOCALWRITES
+
+            var existing = contacts.FirstOrDefault(c => c.Id == contact.Id);
+            if (existing == null)
+                return false;
+
+            contact.CopyData(existing);
+
+            await LocalOnlyModeAlert();
+
+            return true;
+#endif
+
+            if(!IsConnected)
+            {
+                await OfflineAlert();
+                return false;
+            }
+
+            var serializedContact = JsonSerializer.Serialize(contact);
             var buffer = Encoding.UTF8.GetBytes(serializedContact);
             var byteContent = new ByteArrayContent(buffer);
 
-            var response = await client.PutAsync(new Uri($"api/Contacts/{Contact.Id}"), byteContent);
+            var response = await client.PutAsync(new Uri($"api/Contacts/{contact.Id}"), byteContent);
 
-
-            Settings.LastUpdate = DateTime.UtcNow;
 
             return response.IsSuccessStatusCode;
         }
+
 
         public async Task<bool> RemoveItem(Contact contact)
         {
@@ -98,12 +164,41 @@ namespace MyContacts.Services
             if (string.IsNullOrEmpty(id) && !IsConnected)
                 return false;
 
+            Settings.LastUpdate = DateTime.UtcNow;
+
+#if LOCALWRITES
+
+            contacts.Add(contact);
+
+            await Dialogs.Alert(new AlertInfo
+            {
+                Cancel = "OK",
+                Title = "Local Only Mode",
+                Message = "Currently running in local write mode. Data will not be sent to the server."
+            });
+
+            return true;
+#endif
+
             var response = await client.DeleteAsync($"api/Contacts/{id}");
 
 
-            Settings.LastUpdate = DateTime.UtcNow;
-
             return response.IsSuccessStatusCode;
-        }
+        }  
+        
+        Task LocalOnlyModeAlert() => Dialogs.Alert(new AlertInfo
+        {
+            Cancel = "OK",
+            Title = "Local Only Mode",
+            Message = "Currently running in local write mode. Data will not be sent to the server."
+        });
+
+        Task OfflineAlert() => Dialogs.Alert(new AlertInfo
+        {
+            Cancel = "OK",
+            Title = "Offline",
+            Message = "Currently offline, please check internet connection."
+        });
+
     }
 }

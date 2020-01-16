@@ -21,5 +21,21 @@ namespace MyContacts.Extensions
                 State = o.State,
                 Street = o.Street
             };
+
+        public static void CopyData(this Contact o, Contact copyInto)
+        {
+            copyInto.City = o.City;
+            copyInto.Company = o.Company;
+            copyInto.DataPartitionId = o.DataPartitionId;
+            copyInto.Email = o.Email;
+            copyInto.FirstName = o.FirstName;
+            copyInto.JobTitle = o.JobTitle;
+            copyInto.LastName = o.LastName;
+            copyInto.Phone = o.Phone;
+            copyInto.PhotoUrl = o.PhotoUrl;
+            copyInto.PostalCode = o.PostalCode;
+            copyInto.State = o.State;
+            copyInto.Street = o.Street;
+        }
     }
 }

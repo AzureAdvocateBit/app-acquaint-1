@@ -13,20 +13,12 @@ namespace MyContacts.Views
         public EditPage()
         {
             InitializeComponent();
-
-            if (Device.OS == TargetPlatform.iOS)
-                Title = null; // because iOS already displays the previous page's title with the back button, we don't want to display it twice.
-
             BindingContext = new EditViewModel();
         }
 
         public EditPage(Contact contact) 
         {
             InitializeComponent();
-
-            if (Device.OS == TargetPlatform.iOS)
-                Title = null; // because iOS already displays the previous page's title with the back button, we don't want to display it twice.
-
             BindingContext = new EditViewModel(contact);
         }
 
