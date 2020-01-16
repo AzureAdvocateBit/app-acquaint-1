@@ -1,13 +1,13 @@
 ﻿using System;
 
-namespace MyContacts.Services
+namespace MyContacts.Utils
 {
 
 
     /// <summary>
     /// Messaging service alert.
     /// </summary>
-    public class MessagingServiceAlert
+    public class AlertInfo
     {
         /// <summary>
         /// Gets or sets the title.

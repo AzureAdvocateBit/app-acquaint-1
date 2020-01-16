@@ -134,6 +134,13 @@ namespace MyContacts.Shared.Models
             }
         }
 
+        [JsonPropertyName("latitude")]
+        public double Latitude { get; set; }
+
+        [JsonPropertyName("longitude")]
+        public double Longitude { get; set; }
+
+
         string photoUrl;
         [JsonPropertyName("photoUrl")]
         public string PhotoUrl

@@ -7,6 +7,7 @@ using MyContacts.Views;
 using MvvmHelpers.Commands;
 using Command = Xamarin.Forms.Command;
 using MyContacts.Shared.Models;
+using MyContacts.Utils;
 
 namespace MyContacts.ViewModels
 {
@@ -19,8 +20,6 @@ namespace MyContacts.ViewModels
         public DetailViewModel(Contact contact)
         {
             Contact = contact;
-
-            SubscribeToSaveContactsMessages();
         }
 
         public Contact Contact { get; private set; }
@@ -39,13 +38,13 @@ namespace MyContacts.ViewModels
 
         Task ExecuteEditCommand() => PushAsync(new EditPage(Contact));
 
-        Command deleteCommand;
+        AsyncCommand deleteCommand;
 
-        public Command DeleteCommand => deleteCommand ?? (deleteCommand = new Command(ExecuteDeleteCommand));
+        public AsyncCommand DeleteCommand => deleteCommand ?? (deleteCommand = new AsyncCommand(ExecuteDeleteCommand));
 
-        void ExecuteDeleteCommand()
+        async Task ExecuteDeleteCommand()
         {
-            MessagingService.Current.SendMessage<MessagingServiceQuestion>(MessageKeys.DisplayQuestion, new MessagingServiceQuestion()
+            await Dialogs.Question(new QuestionInfo
             {
                 Title = string.Format("Delete {0}?", Contact.DisplayName),
                 Question = null,
@@ -53,38 +52,19 @@ namespace MyContacts.ViewModels
                 Negative = "Cancel",
                 OnCompleted = new Action<bool>(async result =>
                 {
-                    if (!result) return;
+                    if (!result) 
+                        return;
 
-                    // send a message that we want the given MyContacts to be deleted
-                    MessagingService.Current.SendMessage<Contact>(MessageKeys.DeleteContact, Contact);
+                    await DataSource.RemoveItem(Contact);
 
                     await PopAsync();
                 })
             });
         }
 
-        public void SetupMap()
+        public async Task DisplayGeocodingError()
         {
-            if (HasAddress)
-            {
-                MessagingService.Current.SendMessage(MessageKeys.SetupMap);
-            }
-        }
-        void SubscribeToSaveContactsMessages()
-        {
-            // This subscribes to the "SaveMyContacts" message
-            MessagingService.Current.Subscribe<Contact>(MessageKeys.UpdateContact, (service, contact) =>
-                {
-                    Contact = contact;
-                    OnPropertyChanged("MyContacts");
-
-                    MessagingService.Current.SendMessage<Contact>(MessageKeys.ContactLocationUpdated, Contact);
-                });
-        }
-
-        public void DisplayGeocodingError()
-        {
-            MessagingService.Current.SendMessage<MessagingServiceAlert>(MessageKeys.DisplayAlert, new MessagingServiceAlert()
+            await Dialogs.Alert(new AlertInfo
             {
                 Title = "Geocoding Error",
                 Message = "Please make sure the address is valid, or that you have a network connection.",

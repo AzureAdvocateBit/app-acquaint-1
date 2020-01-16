@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace MyContacts.Services
+namespace MyContacts.Utils
 {
     /// <summary>
     /// Messaging service choice.
     /// </summary>
-    public class MessagingServiceChoice
+    public class ChoiceInfo
     {
         /// <summary>
         /// Gets or sets the title.

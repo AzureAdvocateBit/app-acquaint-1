@@ -8,18 +8,19 @@ using MyContacts.Services;
 using MvvmHelpers.Commands;
 using Xamarin.Essentials;
 using MyContacts.Shared.Models;
+using MyContacts.Utils;
 
 namespace MyContacts.ViewModels
 {
     public class ContactViewModel : ViewModelBase
     {
 
-        Command<string> dialNumberCommand;
+        AsyncCommand<string> dialNumberCommand;
 
-        public Command<string> DialNumberCommand => 
-            dialNumberCommand ??= new Command<string>(ExecuteDialNumberCommand);
+        public AsyncCommand<string> DialNumberCommand => 
+            dialNumberCommand ??= new AsyncCommand<string>(ExecuteDialNumberCommand);
 
-        void ExecuteDialNumberCommand(string number)
+        async Task ExecuteDialNumberCommand(string number)
         {
             if (string.IsNullOrWhiteSpace(number))
                 return;
@@ -31,7 +32,7 @@ namespace MyContacts.ViewModels
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-                MessagingService.Current.SendMessage<MessagingServiceAlert>(MessageKeys.DisplayAlert, new MessagingServiceAlert()
+                await Dialogs.Alert(new AlertInfo
                 {
                     Title = "Not Supported",
                     Message = "Phone calls are not supported on this device.",
@@ -58,7 +59,7 @@ namespace MyContacts.ViewModels
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-                MessagingService.Current.SendMessage<MessagingServiceAlert>(MessageKeys.DisplayAlert, new MessagingServiceAlert()
+                await Dialogs.Alert(new AlertInfo
                 {
                     Title = "Not Supported",
                     Message = "Sms is not supported on this device.",
@@ -84,7 +85,7 @@ namespace MyContacts.ViewModels
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-                MessagingService.Current.SendMessage<MessagingServiceAlert>(MessageKeys.DisplayAlert, new MessagingServiceAlert()
+                await Dialogs.Alert(new AlertInfo
                 {
                     Title = "Not Supported",
                     Message = "Email is not supported on this device.",
@@ -114,7 +115,7 @@ namespace MyContacts.ViewModels
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-                MessagingService.Current.SendMessage<MessagingServiceAlert>(MessageKeys.DisplayAlert, new MessagingServiceAlert()
+                await Dialogs.Alert(new AlertInfo
                 {
                     Title = "Not Supported",
                     Message = "Unable to open a map application on the device..",

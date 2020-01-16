@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using MyContacts.Constants;
+﻿using System.Collections.ObjectModel;
 using MyContacts.Models;
-using MyContacts.Services;
 using MyContacts.Styles;
 using MyContacts.Util;
 using Xamarin.Forms;

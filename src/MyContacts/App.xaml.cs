@@ -16,8 +16,6 @@ namespace MyContacts
         {
             InitializeComponent();
 
-            SubscribeToDisplayAlertMessages();
-
             if (UseLocalDataSource)
                 DependencyService.Register<FileDataSource>();
             else
@@ -45,32 +43,6 @@ namespace MyContacts
         {
             base.OnResume();
             ThemeHelper.ChangeTheme(Settings.ThemeOption, true);
-        }
-
-        /// <summary>
-        /// Subscribes to messages for displaying alerts.
-        /// </summary>
-        static void SubscribeToDisplayAlertMessages()
-        {
-            MessagingService.Current.Subscribe<MessagingServiceAlert>(MessageKeys.DisplayAlert, async (service, info) =>
-            {
-                var task = Current?.MainPage?.DisplayAlert(info.Title, info.Message, info.Cancel);
-                if (task != null)
-                {
-                    await task;
-                    info?.OnCompleted?.Invoke();
-                }
-            });
-
-            MessagingService.Current.Subscribe<MessagingServiceQuestion>(MessageKeys.DisplayQuestion, async (service, info) =>
-            {
-                var task = Current?.MainPage?.DisplayAlert(info.Title, info.Question, info.Positive, info.Negative);
-                if (task != null)
-                {
-                    var result = await task;
-                    info?.OnCompleted?.Invoke(result);
-                }
-            });
         }
     }
 }
