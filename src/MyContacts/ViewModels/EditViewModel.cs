@@ -14,7 +14,7 @@ namespace MyContacts.ViewModels
         {
             Contact = new Contact();
             isNew = true;
-            Title = "New MyContacts";
+            Title = "New Contact";
         }
         public EditViewModel(Contact contact)
         {
@@ -22,12 +22,12 @@ namespace MyContacts.ViewModels
             {
                 Contact = new Contact();
                 isNew = true;
-                Title = "New MyContacts";
+                Title = "New Contact";
             }
             else
             {
                 Contact = contact.Clone();
-                Title = "Edit MyContacts";
+                Title = "Edit Contact";
             }
 
 

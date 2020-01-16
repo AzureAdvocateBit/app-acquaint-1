@@ -32,7 +32,7 @@ namespace MyContacts.Util
             }
         }
 
-        public const string BingMapsKey = "UW0peICp3gljJyhqQKFZ~R3XF1I5BvWmWmkD4ujytTA~AoUOqpk2nJB-Wh7wH-9S-zaG-w6sygLitXugNOqm71wx_nc6WHIt6Lb29gyTU04X";
+        public const string BingMapsKey = "AoQgJ0XALYBhKAFT_KBoYGYLqc5a4yg6UvM0s43zPkjadSQXxWxBIBLmmNdcql2f";
 
     }
 }
