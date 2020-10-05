@@ -8,11 +8,11 @@ A simple Xamarin app named *Acquaint*. The app is a simple list of contacts, eac
 ##Build Status
 | Project               | master branch                                                                                              |
 |-----------------------|------------------------------------------------------------------------------------------------------------|
-| Acquaint.XForms.Droid | <img src="https://devops-mobile.visualstudio.com/_apis/public/build/definitions/7e091af6-0350-49cc-aee7-453edbd72186/3/badge" /> |
-| Acquaint.XForms.iOS   | <img src="https://devops-mobile.visualstudio.com/_apis/public/build/definitions/7e091af6-0350-49cc-aee7-453edbd72186/4/badge" /> |
-| Acquaint.XForms.UWP   | <img src="https://devops-mobile.visualstudio.com/_apis/public/build/definitions/7e091af6-0350-49cc-aee7-453edbd72186/18/badge" /> |
-| Acquaint.Native.Droid | <img src="https://devops-mobile.visualstudio.com/_apis/public/build/definitions/7e091af6-0350-49cc-aee7-453edbd72186/2/badge" /> |
-| Acquaint.Native.iOS   | <img src="https://devops-mobile.visualstudio.com/_apis/public/build/definitions/7e091af6-0350-49cc-aee7-453edbd72186/1/badge" /> |
+| Acquaint.XForms.Droid | <img src="https://devops-mobile.visualstudio.com/_apis/public/build/definitions/7e091af6-0350-49cc-aee7-453edbd72186/3/badge?WT.mc_id=appacquaint-github-jamont" /> |
+| Acquaint.XForms.iOS   | <img src="https://devops-mobile.visualstudio.com/_apis/public/build/definitions/7e091af6-0350-49cc-aee7-453edbd72186/4/badge?WT.mc_id=appacquaint-github-jamont" /> |
+| Acquaint.XForms.UWP   | <img src="https://devops-mobile.visualstudio.com/_apis/public/build/definitions/7e091af6-0350-49cc-aee7-453edbd72186/18/badge?WT.mc_id=appacquaint-github-jamont" /> |
+| Acquaint.Native.Droid | <img src="https://devops-mobile.visualstudio.com/_apis/public/build/definitions/7e091af6-0350-49cc-aee7-453edbd72186/2/badge?WT.mc_id=appacquaint-github-jamont" /> |
+| Acquaint.Native.iOS   | <img src="https://devops-mobile.visualstudio.com/_apis/public/build/definitions/7e091af6-0350-49cc-aee7-453edbd72186/1/badge?WT.mc_id=appacquaint-github-jamont" /> |
 -->
 
 ##Cross-platform and native
@@ -36,7 +36,7 @@ Includes integrations such as:
 * email composition
 
 ## Requirements
-* [Visual Studio __2015__](https://www.visualstudio.com/en-us/products/vs-2015-product-editions.aspx) (14.0 or higher) to compile C# 6 langage features (or Xamarin Studio OS X)
+* [Visual Studio __2015__](https://www.visualstudio.com/products/vs-2015-product-editions.aspx?WT.mc_id=appacquaint-github-jamont) (14.0 or higher) to compile C# 6 langage features (or Xamarin Studio OS X)
 * Xamarin add-ons for Visual Studio (available via the Visual Studio installer)
 * __Visual Studio Community Edition is fully supported!__
 
@@ -55,10 +55,10 @@ Insert it in the Android project: `~/Properties/AndroidManifest.xml`:
 ## Enabling SQLite for UWP
 
 The UWP app requires that you install the SQLite for UWP extension for Visual Studio. You can find the latest version here:
-https://visualstudiogallery.msdn.microsoft.com/4913e7d5-96c9-4dde-a1a1-69820d615936
+https://visualstudiogallery.msdn.microsoft.com/4913e7d5-96c9-4dde-a1a1-69820d615936?WT.mc_id=appacquaint-github-jamont
 
 The steps that were taken to implement it in the UWP project can be found in steps 1-3 here:
-https://azure.microsoft.com/en-us/documentation/articles/app-service-mobile-windows-store-dotnet-get-started-offline-data/#_update-the-client-app-to-support-offline-features
+https://azure.microsoft.com/documentation/articles/app-service-mobile-windows-store-dotnet-get-started-offline-data/?WT.mc_id=appacquaint-github-jamont#_update-the-client-app-to-support-offline-features
 
 ## Platform-specific UI Features (in native version only)
 | 3D Touch Previewing (iOS) | Shared View Transitions (Android) |
